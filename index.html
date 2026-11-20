@@ -2,509 +2,494 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#F5F1E9">
-    <title>FridgeChef</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F5F1E9">
+<title>FridgeChef</title>
+<link rel="manifest" href="./manifest.json">
 
-    <link rel="manifest" href="./manifest.json">
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #F5F1E9;
-            color: #342D27;
-            padding-bottom: 100px;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 24px 20px;
-        }
-
-        header h1 {
-            font-family: Georgia, serif;
-            font-size: 27px;
-        }
-
-        .profile-button {
-            border: none;
-            background: white;
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            display: grid;
-            place-items: center;
-            color: #75695E;
-            cursor: pointer;
-        }
-
-        .profile-button svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        .container {
-            padding: 10px 20px;
-        }
-
-        .welcome h2 {
-            font-family: Georgia, serif;
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
-
-        .welcome p {
-            color: #81776D;
-            margin-bottom: 22px;
-        }
-
-        .hero {
-            height: 210px;
-            border-radius: 18px;
-            background:
-                linear-gradient(transparent, rgba(0,0,0,.45)),
-                url("https://images.unsplash.com/photo-1547592180-85f173990554?w=900");
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: flex-end;
-            padding: 20px;
-            color: white;
-            margin-bottom: 28px;
-        }
-
-        .hero h2 {
-            font-family: Georgia, serif;
-            font-size: 25px;
-        }
-
-        .section-title {
-            font-family: Georgia, serif;
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-
-        .actions {
-            display: grid;
-            gap: 14px;
-        }
-
-        .action {
-            background: white;
-            border-radius: 15px;
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-decoration: none;
-            color: inherit;
-            transition: transform .2s;
-        }
-
-        .action:active {
-            transform: scale(.98);
-        }
-
-        .action img {
-            width: 85px;
-            height: 85px;
-            border-radius: 12px;
-            object-fit: cover;
-        }
-
-        .action h3 {
-            font-size: 16px;
-            margin-bottom: 6px;
-        }
-
-        .action p {
-            font-size: 13px;
-            color: #81776D;
-        }
-
-        nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 5px 18px;
-            border-top: 1px solid #eee8df;
-            z-index: 5;
-        }
-
-        nav a {
-            color: #75695E;
-            text-decoration: none;
-            font-size: 11px;
-            text-align: center;
-            min-width: 60px;
-        }
-
-        nav a.active {
-            color: #9A7457;
-            font-weight: bold;
-        }
-
-        nav svg {
-            display: block;
-            width: 22px;
-            height: 22px;
-            margin: 0 auto 5px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.7;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        /* PROFIL */
-
-        .profile-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(35, 29, 24, .4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 10;
-        }
-
-        .profile-overlay[hidden] {
-            display: none;
-        }
-
-        .profile-card {
-            background: #FFFEFC;
-            width: 100%;
-            max-width: 380px;
-            border-radius: 20px;
-            padding: 25px;
-            position: relative;
-        }
-
-        .close-profile {
-            position: absolute;
-            right: 18px;
-            top: 17px;
-            border: none;
-            background: none;
-            font-size: 25px;
-            color: #81776D;
-            cursor: pointer;
-        }
-
-        .profile-avatar {
-            width: 65px;
-            height: 65px;
-            background: #F0E7DA;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            margin-bottom: 18px;
-            color: #8D7159;
-        }
-
-        .profile-avatar svg {
-            width: 30px;
-            height: 30px;
-        }
-
-        .profile-card h2 {
-            font-family: Georgia, serif;
-            font-size: 25px;
-            margin-bottom: 7px;
-        }
-
-        .profile-description {
-            color: #81776D;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-
-        .profile-info {
-            background: #F7F3ED;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .profile-info p {
-            font-size: 12px;
-            color: #81776D;
-            margin-bottom: 5px;
-        }
-
-        .profile-info strong {
-            font-size: 14px;
-            overflow-wrap: anywhere;
-        }
-
-        .logout-button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            background: #8D7159;
-            color: white;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        .logout-button:disabled {
-            opacity: .6;
-        }
-
-        .profile-error {
-            color: #B34D42;
-            font-size: 13px;
-            margin-bottom: 12px;
-        }
-    </style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#F5F1E9;color:#342D27;padding-bottom:90px}
+header{display:flex;justify-content:space-between;align-items:center;padding:24px 20px}
+header h1{font-family:Georgia,serif;font-size:27px}
+button{font:inherit;cursor:pointer}
+.profile-button{border:0;background:white;border-radius:50%;width:44px;height:44px;font-size:21px}
+.container{padding:10px 20px}
+.welcome h2{font-family:Georgia,serif;font-size:30px;margin-bottom:8px}
+.welcome p,.muted{color:#81776D}
+.welcome p{margin-bottom:22px}
+.hero{height:210px;border-radius:18px;background:linear-gradient(transparent,rgba(0,0,0,.45)),url("https://images.unsplash.com/photo-1547592180-85f173990554?w=900") center/cover;display:flex;align-items:flex-end;padding:20px;color:white;margin-bottom:28px}
+.hero h2{font-family:Georgia,serif;font-size:25px}
+.section-title{font-family:Georgia,serif;font-size:22px;margin-bottom:15px}
+.actions{display:grid;gap:14px}
+.action{background:white;border:0;border-radius:15px;padding:14px;display:flex;align-items:center;gap:15px;text-align:left;color:inherit;width:100%}
+.action img{width:85px;height:85px;border-radius:12px;object-fit:cover}
+.action h3{font-size:16px;margin-bottom:6px}
+.action p{font-size:13px;color:#81776D}
+.page{display:none}
+.page.active{display:block}
+.back{border:0;background:none;color:#8D7159;margin-bottom:18px}
+.panel{background:white;padding:18px;border-radius:16px;margin-bottom:16px}
+.primary{background:#8D7159;color:white;border:0;border-radius:12px;padding:14px 18px;width:100%;margin-top:12px}
+.secondary{background:#F0E7DA;color:#70563F;border:0;border-radius:10px;padding:11px 14px}
+input[type=file]{width:100%;margin:14px 0}
+.preview{width:100%;max-height:260px;object-fit:cover;border-radius:12px;display:none;margin-top:12px}
+.status{font-size:14px;color:#81776D;margin-top:12px;line-height:1.5}
+.ingredient-list{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.ingredient{background:#F0E7DA;border-radius:20px;padding:9px 12px;font-size:14px;display:flex;gap:8px;align-items:center}
+.ingredient button{border:0;background:none;color:#8D7159;font-weight:bold}
+.add-row{display:flex;gap:8px}
+.add-row input{min-width:0;flex:1;border:1px solid #E5DCCE;border-radius:10px;padding:12px}
+.recipe-card{background:white;border-radius:15px;padding:16px;margin-bottom:14px}
+.recipe-card img{width:100%;height:160px;object-fit:cover;border-radius:11px;margin-bottom:12px}
+.recipe-card h3{font-family:Georgia,serif;font-size:20px;margin-bottom:8px}
+.recipe-card p{font-size:14px;color:#81776D;margin:7px 0}
+.recipe-card details{margin-top:12px;border-top:1px solid #eee8df;padding-top:12px}
+.recipe-card li{margin:8px 0 8px 18px;font-size:14px}
+nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:12px 5px 18px;border-top:1px solid #eee8df;z-index:5}
+nav button{border:0;background:none;color:#75695E;font-size:11px;min-width:60px}
+nav button.active{color:#9A7457;font-weight:bold}
+nav svg{display:block;width:22px;height:22px;margin:0 auto 5px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.profile-overlay{position:fixed;inset:0;background:#0006;display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.profile-overlay[hidden]{display:none}
+.profile-card{background:white;width:100%;max-width:380px;border-radius:20px;padding:25px;position:relative}
+.close-profile{position:absolute;right:18px;top:14px;border:0;background:none;font-size:25px}
+.profile-card h2{font-family:Georgia,serif;margin-bottom:18px}
+.profile-info{background:#F7F3ED;border-radius:12px;padding:15px;margin-bottom:20px}
+.profile-info p{font-size:12px;color:#81776D;margin-bottom:5px}
+.profile-info strong{font-size:14px;overflow-wrap:anywhere}
+.logout-button{width:100%;padding:14px;border:0;border-radius:12px;background:#8D7159;color:white}
+.error{color:#B34D42}
+</style>
 </head>
 
 <body>
 
 <header>
-    <h1>FridgeChef</h1>
-
-    <button class="profile-button" id="profileButton"
-            aria-label="Ouvrir mon profil">
-        <svg viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="1.7"
-             stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="4"></circle>
-            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
-        </svg>
-    </button>
+<h1>FridgeChef</h1>
+<button class="profile-button" id="profileButton" aria-label="Mon profil">♙</button>
 </header>
 
 <main class="container">
 
-    <section class="welcome">
-        <h2 id="welcomeMessage">Bonjour !</h2>
-        <p>Qu'allons-nous cuisiner aujourd'hui ?</p>
-    </section>
+<!-- ACCUEIL -->
+<section class="page active" id="homePage">
+<div class="welcome">
+<h2 id="welcomeMessage">Bonjour !</h2>
+<p>Qu'allons-nous cuisiner aujourd'hui ?</p>
+</div>
 
-    <section class="hero">
-        <h2>De bons petits plats<br>commencent ici.</h2>
-    </section>
+<div class="hero">
+<h2>De bons petits plats<br>commencent ici.</h2>
+</div>
 
-    <h2 class="section-title">Que souhaitez-vous faire ?</h2>
+<h2 class="section-title">Que souhaitez-vous faire ?</h2>
 
-    <section class="actions">
+<div class="actions">
+<button class="action" data-open="fridgePage">
+<img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=300" alt="Légumes">
+<div><h3>Photographier mon frigo</h3><p>Reconnaître automatiquement mes aliments.</p></div>
+</button>
 
-        <a href="#" class="action">
-            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=300"
-                 alt="Légumes">
-            <div>
-                <h3>Scanner mon frigo</h3>
-                <p>Identifier mes aliments en photo.</p>
-            </div>
-        </a>
+<button class="action" data-open="fridgePage">
+<img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=300" alt="Plat cuisiné">
+<div><h3>Trouver une recette</h3><p>Des recettes avec mes aliments uniquement.</p></div>
+</button>
 
-        <a href="#" class="action">
-            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=300"
-                 alt="Plat cuisiné">
-            <div>
-                <h3>Trouver une recette</h3>
-                <p>Cuisiner avec mes ingrédients.</p>
-            </div>
-        </a>
+<button class="action" data-open="recipesPage">
+<img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=300" alt="Repas">
+<div><h3>Mes recettes</h3><p>Retrouver les recettes proposées.</p></div>
+</button>
+</div>
+</section>
 
-        <a href="#" class="action">
-            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=300"
-                 alt="Repas">
-            <div>
-                <h3>Mes favoris</h3>
-                <p>Retrouver mes recettes préférées.</p>
-            </div>
-        </a>
+<!-- MON FRIGO -->
+<section class="page" id="fridgePage">
+<button class="back" data-open="homePage">← Retour à l'accueil</button>
 
-    </section>
+<h2 class="section-title">Mon frigo</h2>
+<p class="muted">Photographie l'intérieur de ton réfrigérateur pour identifier tes aliments.</p>
+
+<div class="panel">
+<label for="fridgePhoto"><strong>Choisir une photo</strong></label>
+<input id="fridgePhoto" type="file" accept="image/jpeg,image/png" capture="environment">
+<img id="photoPreview" class="preview" alt="Aperçu de mon frigo">
+
+<button class="primary" id="scanButton">Analyser mon frigo</button>
+<p class="status" id="scanStatus"></p>
+</div>
+
+<div class="panel" id="ingredientsPanel" hidden>
+<h3>Les aliments détectés</h3>
+<p class="muted">Vérifie la liste et corrige-la si nécessaire.</p>
+
+<div class="ingredient-list" id="ingredientList"></div>
+
+<div class="add-row">
+<input id="newIngredient" type="text" placeholder="Ajouter un aliment">
+<button class="secondary" id="addIngredient">Ajouter</button>
+</div>
+
+<button class="primary" id="recipeButton">Trouver mes recettes</button>
+<p class="status" id="recipeStatus"></p>
+</div>
+</section>
+
+<!-- RECETTES -->
+<section class="page" id="recipesPage">
+<button class="back" data-open="fridgePage">← Retour à mon frigo</button>
+<h2 class="section-title">Mes recettes</h2>
+<p class="muted" id="recipeIntro">Tes recettes seront affichées ici.</p>
+<div id="recipeResults"></div>
+</section>
+
 </main>
 
-<!-- FENÊTRE PROFIL -->
-
+<!-- PROFIL -->
 <div class="profile-overlay" id="profileModal" hidden>
-    <section class="profile-card" role="dialog"
-             aria-modal="true" aria-labelledby="profileTitle">
-
-        <button class="close-profile" id="closeProfile"
-                aria-label="Fermer">&times;</button>
-
-        <div class="profile-avatar">
-            <svg viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="1.7"
-                 stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
-            </svg>
-        </div>
-
-        <h2 id="profileTitle">Mon profil</h2>
-        <p class="profile-description">
-            Retrouvez les informations de votre compte.
-        </p>
-
-        <div class="profile-info">
-            <p>Prénom</p>
-            <strong id="profileName">-</strong>
-            <br><br>
-            <p>Adresse e-mail</p>
-            <strong id="profileEmail">-</strong>
-        </div>
-
-        <p class="profile-error" id="profileError"></p>
-
-        <button class="logout-button" id="logoutButton">
-            Se déconnecter
-        </button>
-
-    </section>
+<div class="profile-card">
+<button class="close-profile" id="closeProfile">×</button>
+<h2>Mon profil</h2>
+<div class="profile-info">
+<p>Prénom</p>
+<strong id="profileName">-</strong>
+<br><br>
+<p>Adresse e-mail</p>
+<strong id="profileEmail">-</strong>
+</div>
+<button class="logout-button" id="logoutButton">Se déconnecter</button>
+</div>
 </div>
 
 <!-- NAVIGATION -->
-
 <nav>
-    <a href="#" class="active">
-        <svg viewBox="0 0 24 24">
-            <path d="m3 10 9-7 9 7"></path>
-            <path d="M5 9v12h14V9"></path>
-            <path d="M9 21v-7h6v7"></path>
-        </svg>
-        Accueil
-    </a>
-
-    <a href="#">
-        <svg viewBox="0 0 24 24">
-            <rect x="3" y="5" width="18" height="16" rx="2"></rect>
-            <path d="M3 10h18M9 5v16"></path>
-        </svg>
-        Mon frigo
-    </a>
-
-    <a href="#">
-        <svg viewBox="0 0 24 24">
-            <path d="M6 3v7M10 3v7M8 10v11"></path>
-            <path d="M6 10h4"></path>
-            <path d="M16 3c3 2 4 5 4 9h-4V3zM18 12v9"></path>
-        </svg>
-        Recettes
-    </a>
-
-    <a href="#">
-        <svg viewBox="0 0 24 24">
-            <path d="M20.8 8.8c0 5.2-8.8 11-8.8 11s-8.8-5.8-8.8-11A4.8 4.8 0 0 1 12 6.3a4.8 4.8 0 0 1 8.8 2.5z"></path>
-        </svg>
-        Favoris
-    </a>
+<button class="active" data-open="homePage">
+<svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-7h6v7"/></svg>
+Accueil
+</button>
+<button data-open="fridgePage">
+<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 10h18M8 6v1M8 13v3"/></svg>
+Mon frigo
+</button>
+<button data-open="recipesPage">
+<svg viewBox="0 0 24 24"><path d="M6 3v7M10 3v7M8 10v11M16 3c3 2 4 5 4 9h-4V3zM18 12v9"/></svg>
+Recettes
+</button>
+<button data-open="recipesPage">
+<svg viewBox="0 0 24 24"><path d="M20.8 8.8c0 5.2-8.8 11-8.8 11s-8.8-5.8-8.8-11A4.8 4.8 0 0 1 12 6.3a4.8 4.8 0 0 1 8.8 2.5z"/></svg>
+Favoris
+</button>
 </nav>
 
 <script type="module">
-    import { supabase } from "./supabase.js";
+import { supabase } from "./supabase.js";
 
-    const welcomeMessage = document.getElementById("welcomeMessage");
-    const profileButton = document.getElementById("profileButton");
-    const profileModal = document.getElementById("profileModal");
-    const closeProfile = document.getElementById("closeProfile");
-    const logoutButton = document.getElementById("logoutButton");
-    const profileName = document.getElementById("profileName");
-    const profileEmail = document.getElementById("profileEmail");
-    const profileError = document.getElementById("profileError");
+const API_URL = "https://fridgechef-ui71.onrender.com";
 
-    let currentUser = null;
+const $ = id => document.getElementById(id);
 
-    // Vérification de la session
-    async function initializeApp() {
-        try {
-            const { data, error } = await supabase.auth.getSession();
+let session = null;
+let selectedPhoto = null;
+let ingredients = [];
+let recipes = [];
 
-            if (error) {
-                throw error;
-            }
+async function initializeApp() {
+    const { data, error } = await supabase.auth.getSession();
 
-            if (!data.session) {
-                window.location.replace("./auth.html");
-                return;
-            }
-
-            currentUser = data.session.user;
-
-            const prenom =
-                currentUser.user_metadata?.first_name || "vous";
-
-            welcomeMessage.textContent = `Bonjour ${prenom} !`;
-
-            profileName.textContent = prenom;
-            profileEmail.textContent = currentUser.email || "";
-
-        } catch (error) {
-            console.error("Erreur de session :", error);
-            welcomeMessage.textContent = "Impossible de charger votre compte.";
-        }
-    }
-
-    // Ouvrir le profil
-    profileButton.addEventListener("click", () => {
-        if (!currentUser) return;
-
-        profileModal.hidden = false;
-        profileError.textContent = "";
-    });
-
-    // Fermer le profil
-    closeProfile.addEventListener("click", () => {
-        profileModal.hidden = true;
-    });
-
-    profileModal.addEventListener("click", (event) => {
-        if (event.target === profileModal) {
-            profileModal.hidden = true;
-        }
-    });
-
-    // Déconnexion
-    logoutButton.addEventListener("click", async () => {
-        logoutButton.disabled = true;
-        logoutButton.textContent = "Déconnexion...";
-
-        const { error } = await supabase.auth.signOut();
-
-        if (error) {
-            profileError.textContent =
-                "Impossible de vous déconnecter. Réessayez.";
-            logoutButton.disabled = false;
-            logoutButton.textContent = "Se déconnecter";
-            return;
-        }
-
+    if (error || !data.session) {
         window.location.replace("./auth.html");
+        return;
+    }
+
+    session = data.session;
+    const user = session.user;
+    const firstName = user.user_metadata?.first_name || "vous";
+
+    $("welcomeMessage").textContent = `Bonjour ${firstName} !`;
+    $("profileName").textContent = firstName;
+    $("profileEmail").textContent = user.email || "";
+}
+
+function showPage(pageId) {
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
     });
 
-    await initializeApp();
+    $(pageId).classList.add("active");
 
-    // Enregistrement du service worker
-    if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-            navigator.serviceWorker.register("./service-worker.js")
-                .catch(error => {
-                    console.error("Erreur service worker :", error);
-                });
-        });
+    document.querySelectorAll("nav button").forEach(button => {
+        button.classList.toggle("active", button.dataset.open === pageId);
+    });
+
+    window.scrollTo(0, 0);
+}
+
+document.querySelectorAll("[data-open]").forEach(button => {
+    button.addEventListener("click", () => showPage(button.dataset.open));
+});
+
+// PROFIL
+$("profileButton").addEventListener("click", () => {
+    $("profileModal").hidden = false;
+});
+
+$("closeProfile").addEventListener("click", () => {
+    $("profileModal").hidden = true;
+});
+
+$("logoutButton").addEventListener("click", async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+        alert("La déconnexion a échoué.");
+        return;
     }
+
+    window.location.replace("./auth.html");
+});
+
+// PHOTO
+$("fridgePhoto").addEventListener("change", event => {
+    const file = event.target.files[0];
+
+    selectedPhoto = file || null;
+
+    if (!file) return;
+
+    if (!["image/jpeg", "image/png"].includes(file.type)) {
+        selectedPhoto = null;
+        $("scanStatus").textContent = "Choisis une photo JPEG ou PNG.";
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+        selectedPhoto = null;
+        $("scanStatus").textContent = "La photo doit faire moins de 5 Mo.";
+        return;
+    }
+
+    $("photoPreview").src = URL.createObjectURL(file);
+    $("photoPreview").style.display = "block";
+    $("scanStatus").textContent = "Photo prête à être analysée.";
+});
+
+async function getAccessToken() {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data.session) {
+        window.location.replace("./auth.html");
+        throw new Error("Session expirée. Reconnecte-toi.");
+    }
+
+    session = data.session;
+    return session.access_token;
+}
+
+// ENVOYER LA PHOTO À L'API
+$("scanButton").addEventListener("click", async () => {
+    if (!selectedPhoto) {
+        $("scanStatus").textContent = "Choisis d'abord une photo de ton frigo.";
+        return;
+    }
+
+    $("scanButton").disabled = true;
+    $("scanButton").textContent = "Analyse en cours...";
+    $("scanStatus").textContent = "L'IA observe les aliments de ton frigo...";
+
+    try {
+        const token = await getAccessToken();
+        const formData = new FormData();
+        formData.append("image", selectedPhoto);
+
+        const response = await fetch(`${API_URL}/scan`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.detail || "Impossible d'analyser la photo.");
+        }
+
+        ingredients = [...new Set(result.ingredients || [])];
+
+        renderIngredients();
+        $("ingredientsPanel").hidden = false;
+        $("scanStatus").textContent = `${ingredients.length} aliment(s) détecté(s).`;
+
+    } catch (error) {
+        $("scanStatus").textContent = error.message;
+    } finally {
+        $("scanButton").disabled = false;
+        $("scanButton").textContent = "Analyser mon frigo";
+    }
+});
+
+// AFFICHER ET MODIFIER LES ALIMENTS
+function renderIngredients() {
+    const list = $("ingredientList");
+    list.replaceChildren();
+
+    ingredients.forEach((ingredient, index) => {
+        const chip = document.createElement("span");
+        chip.className = "ingredient";
+
+        const name = document.createElement("span");
+        name.textContent = ingredient;
+
+        const remove = document.createElement("button");
+        remove.textContent = "×";
+        remove.setAttribute("aria-label", `Supprimer ${ingredient}`);
+
+        remove.addEventListener("click", () => {
+            ingredients.splice(index, 1);
+            renderIngredients();
+        });
+
+        chip.append(name, remove);
+        list.appendChild(chip);
+    });
+}
+
+$("addIngredient").addEventListener("click", () => {
+    const value = $("newIngredient").value.trim();
+
+    if (!value) return;
+
+    if (!ingredients.some(item => item.toLowerCase() === value.toLowerCase())) {
+        ingredients.push(value);
+        renderIngredients();
+    }
+
+    $("newIngredient").value = "";
+});
+
+// DEMANDER LES RECETTES
+$("recipeButton").addEventListener("click", async () => {
+    if (!ingredients.length) {
+        $("recipeStatus").textContent = "Ajoute au moins un aliment.";
+        return;
+    }
+
+    $("recipeButton").disabled = true;
+    $("recipeButton").textContent = "Recherche en cours...";
+    $("recipeStatus").textContent = "Recherche de recettes avec tes aliments...";
+
+    try {
+        const token = await getAccessToken();
+
+        const response = await fetch(`${API_URL}/recipes`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ingredients })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.detail || "Impossible de trouver des recettes.");
+        }
+
+        recipes = result.recipes || [];
+        renderRecipes();
+        showPage("recipesPage");
+
+    } catch (error) {
+        $("recipeStatus").textContent = error.message;
+    } finally {
+        $("recipeButton").disabled = false;
+        $("recipeButton").textContent = "Trouver mes recettes";
+    }
+});
+
+// AFFICHER LES RECETTES
+function renderRecipes() {
+    const container = $("recipeResults");
+    container.replaceChildren();
+
+    $("recipeIntro").textContent =
+        "Recettes réalisées avec les aliments de ton frigo.";
+
+    if (!recipes.length) {
+        $("recipeIntro").textContent =
+            "Aucune recette réalisable avec cette liste d'aliments pour le moment.";
+        return;
+    }
+
+    recipes.forEach(recipe => {
+        const card = document.createElement("article");
+        card.className = "recipe-card";
+
+        if (recipe.image_url) {
+            const img = document.createElement("img");
+            img.src = recipe.image_url;
+            img.alt = recipe.title || "Recette";
+            img.loading = "lazy";
+            card.appendChild(img);
+        }
+
+        const title = document.createElement("h3");
+        title.textContent = recipe.title || "Recette";
+        card.appendChild(title);
+
+        const info = document.createElement("p");
+        info.textContent =
+            `${recipe.time_minutes || "?"} min · ${recipe.servings || "?"} personne(s)`;
+        card.appendChild(info);
+
+        const details = document.createElement("details");
+        const summary = document.createElement("summary");
+        summary.textContent = "Voir la recette";
+        details.appendChild(summary);
+
+        const ingredientsTitle = document.createElement("p");
+        ingredientsTitle.textContent = "Ingrédients";
+        details.appendChild(ingredientsTitle);
+
+        const ingredientList = document.createElement("ul");
+
+        (recipe.ingredients || []).forEach(item => {
+            const li = document.createElement("li");
+            li.textContent = `${item.name} : ${item.quantity}`;
+            ingredientList.appendChild(li);
+        });
+
+        details.appendChild(ingredientList);
+
+        const stepsTitle = document.createElement("p");
+        stepsTitle.textContent = "Préparation";
+        details.appendChild(stepsTitle);
+
+        const steps = document.createElement("ol");
+
+        (recipe.steps || []).forEach(step => {
+            const li = document.createElement("li");
+            li.textContent = step;
+            steps.appendChild(li);
+        });
+
+        details.appendChild(steps);
+        card.appendChild(details);
+        container.appendChild(card);
+    });
+}
+
+await initializeApp();
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js")
+            .catch(error => console.error("Service Worker :", error));
+    });
+}
 </script>
 
 </body>
