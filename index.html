@@ -818,7 +818,6 @@
 </nav>
 
 <!-- PROFIL -->
-<!-- PROFIL -->
 <div class="modal" id="profileModal">
     <div class="modal-content profile-modal-content">
 
@@ -1131,13 +1130,20 @@ await loadFavorites();
     });
 
     // PROFIL
-    $("profileButton").addEventListener("click", () => {
-        $("profileModal").classList.add("show");
-    });
+    // PROFIL
+$("profileButton").addEventListener("click", () => {
+    selectedCharacter = savedCharacter;
+    renderCharacterGrid();
+    updateCurrentCharacter();
+    $("characterStatus").textContent = "";
+    $("profileModal").classList.add("show");
+});
 
-    $("closeProfile").addEventListener("click", () => {
-        $("profileModal").classList.remove("show");
-    });
+$("saveCharacterButton").addEventListener("click", saveCharacter);
+
+$("closeProfile").addEventListener("click", () => {
+    $("profileModal").classList.remove("show");
+});
 
     $("profileModal").addEventListener("click", event => {
         if (event.target === $("profileModal")) {
