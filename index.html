@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f8f5ef">
     <title>FridgeChef</title>
-
     <link rel="manifest" href="./manifest.json">
 
     <style>
@@ -18,36 +16,27 @@
             --dark: #292820;
             --muted: #89877e;
             --green: #66785d;
+            --green-dark: #536449;
             --green-light: #e9eee5;
             --border: #eae6dc;
             --cream: #f0eadf;
+            --shadow: 0 12px 30px rgba(41, 40, 32, .06);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background: var(--bg);
             color: var(--dark);
             font-family: 'DM Sans', sans-serif;
-            padding-bottom: 95px;
+            padding-bottom: 100px;
         }
 
-        button, input, select {
-            font: inherit;
-        }
+        button, input, select { font: inherit; }
+        button { cursor: pointer; }
+        button:disabled { opacity: .55; cursor: not-allowed; }
 
-        button {
-            cursor: pointer;
-        }
-
-        .container {
-            width: min(1100px, 92%);
-            margin: auto;
-        }
+        .container { width: min(1100px, 92%); margin: auto; }
 
         header {
             padding: 22px 0;
@@ -60,39 +49,34 @@
             font-family: 'Playfair Display', serif;
             font-size: 27px;
             font-weight: 700;
+            letter-spacing: -.5px;
         }
 
-        .logo span {
-            color: var(--green);
-        }
+        .logo span { color: var(--green); }
 
         .profile-button {
-            border: none;
+            border: 1px solid var(--border);
             background: var(--white);
-            width: 43px;
-            height: 43px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             color: var(--green);
-            font-size: 18px;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 4px 12px rgba(41,40,32,.04);
         }
 
-        .page {
-            display: none;
-            animation: appear .25s ease;
-        }
+        .profile-button svg { width: 21px; height: 21px; }
 
-        .page.active {
-            display: block;
-        }
+        .page { display: none; animation: appear .25s ease; }
+        .page.active { display: block; }
 
         @keyframes appear {
             from { opacity: 0; transform: translateY(7px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
 
         h1 {
             font-size: clamp(30px, 5vw, 43px);
@@ -100,15 +84,8 @@
             margin-bottom: 12px;
         }
 
-        h2 {
-            font-size: 27px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            color: var(--muted);
-            line-height: 1.6;
-        }
+        h2 { font-size: 27px; margin-bottom: 10px; }
+        p { color: var(--muted); line-height: 1.6; }
 
         .eyebrow {
             color: var(--green);
@@ -118,6 +95,8 @@
             font-weight: 700;
             margin-bottom: 12px;
         }
+
+        .page-intro { margin: 25px 0; }
 
         .hero {
             background: var(--cream);
@@ -132,9 +111,8 @@
             overflow: hidden;
         }
 
-        .hero-content {
-            max-width: 520px;
-        }
+        .hero-content { max-width: 520px; }
+        .hero-content p { max-width: 490px; }
 
         .hero-image {
             width: 35%;
@@ -155,10 +133,7 @@
             transition: .2s;
         }
 
-        .primary-button:hover {
-            background: #536449;
-            transform: translateY(-2px);
-        }
+        .primary-button:hover { background: var(--green-dark); transform: translateY(-2px); }
 
         .secondary-button {
             border: 1px solid var(--border);
@@ -169,9 +144,7 @@
             font-weight: 600;
         }
 
-        .section-heading {
-            margin: 30px 0 16px;
-        }
+        .section-heading { margin: 30px 0 16px; }
 
         .quick-grid {
             display: grid;
@@ -188,32 +161,23 @@
             transition: .2s;
         }
 
-        .quick-card:hover {
-            transform: translateY(-3px);
-        }
+        .quick-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 
         .quick-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 13px;
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
             background: var(--green-light);
+            color: var(--green);
             display: grid;
             place-items: center;
-            font-size: 21px;
             margin-bottom: 15px;
         }
 
-        .quick-card h3 {
-            font-size: 19px;
-            margin-bottom: 6px;
-        }
+        .quick-icon svg { width: 23px; height: 23px; }
+        .quick-card h3 { font-size: 19px; margin-bottom: 6px; }
 
         /* PAGE FRIGO */
-
-        .page-intro {
-            margin: 25px 0;
-        }
-
         .fridge-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -226,7 +190,10 @@
             border: 1px solid var(--border);
             border-radius: 21px;
             padding: 23px;
+            box-shadow: 0 5px 18px rgba(41,40,32,.025);
         }
+
+        .panel > p { font-size: 14px; }
 
         .upload-zone {
             border: 2px dashed #d9dfd2;
@@ -241,30 +208,26 @@
             padding: 22px;
             cursor: pointer;
             transition: .2s;
+            margin-top: 18px;
         }
 
-        .upload-zone:hover {
-            border-color: var(--green);
-            background: #f5f8f2;
-        }
+        .upload-zone:hover { border-color: var(--green); background: #f5f8f2; }
 
         .upload-icon {
-            font-size: 43px;
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: var(--green-light);
+            color: var(--green);
+            display: grid;
+            place-items: center;
             margin-bottom: 13px;
         }
 
-        .upload-zone strong {
-            margin-bottom: 7px;
-        }
-
-        .upload-zone small {
-            color: var(--muted);
-            margin-top: 8px;
-        }
-
-        #photoInput {
-            display: none;
-        }
+        .upload-icon svg { width: 28px; height: 28px; }
+        .upload-zone strong { margin-bottom: 7px; }
+        .upload-zone small { color: var(--muted); margin-top: 8px; }
+        #photoInput { display: none; }
 
         .preview {
             width: 100%;
@@ -298,20 +261,12 @@
             border: none;
             background: transparent;
             color: #66785d;
-            font-size: 17px;
+            font-size: 18px;
             line-height: 1;
         }
 
-        .add-ingredient {
-            display: flex;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .add-ingredient input {
-            flex: 1;
-            min-width: 0;
-        }
+        .add-ingredient { display: flex; gap: 8px; margin-top: 15px; }
+        .add-ingredient input { flex: 1; min-width: 0; }
 
         input, select {
             width: 100%;
@@ -323,9 +278,7 @@
             color: var(--dark);
         }
 
-        input:focus, select:focus {
-            border-color: var(--green);
-        }
+        input:focus, select:focus { border-color: var(--green); }
 
         .small-button {
             border: none;
@@ -334,12 +287,10 @@
             border-radius: 11px;
             padding: 0 16px;
             font-weight: 700;
+            font-size: 20px;
         }
 
-        .muted-small {
-            font-size: 12px;
-            margin-top: 12px;
-        }
+        .muted-small { font-size: 12px; margin-top: 12px; }
 
         .status {
             margin-top: 13px;
@@ -348,10 +299,7 @@
             min-height: 20px;
         }
 
-        .servings-area {
-            margin-top: 22px;
-        }
-
+        .servings-area { margin-top: 22px; }
         .servings-area label {
             display: block;
             font-weight: 600;
@@ -359,12 +307,9 @@
             margin-bottom: 9px;
         }
 
-        .full-button {
-            width: 100%;
-        }
+        .full-button { width: 100%; }
 
         /* RECETTES */
-
         .recipes-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -378,12 +323,10 @@
             border-radius: 20px;
             overflow: hidden;
             transition: .2s;
+            box-shadow: 0 5px 18px rgba(41,40,32,.025);
         }
 
-        .recipe-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px #2928200d;
-        }
+        .recipe-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
 
         .recipe-photo {
             width: 100%;
@@ -393,35 +336,29 @@
             display: block;
         }
 
-        .recipe-content {
-            padding: 19px;
-        }
-
-        .recipe-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .recipe-title {
-            font-size: 21px;
-            margin-bottom: 9px;
-        }
+        .recipe-content { padding: 19px; }
+        .recipe-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .recipe-title { font-size: 21px; margin-bottom: 9px; }
 
         .favorite-button {
             border: none;
             background: var(--bg);
+            color: #a66b60;
             border-radius: 50%;
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             flex-shrink: 0;
-            font-size: 19px;
+            display: grid;
+            place-items: center;
+            transition: .2s;
         }
+
+        .favorite-button:hover { transform: scale(1.08); }
+        .favorite-button svg { width: 20px; height: 20px; }
 
         .recipe-meta {
             display: flex;
-            gap: 13px;
+            gap: 9px;
             flex-wrap: wrap;
             font-size: 12px;
             color: var(--muted);
@@ -429,29 +366,19 @@
         }
 
         .recipe-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             background: #f7f5f0;
             border-radius: 20px;
             padding: 7px 10px;
         }
 
-        .recipe-details {
-            border-top: 1px solid var(--border);
-            padding-top: 14px;
-            margin-top: 12px;
-        }
+        .recipe-meta svg { width: 14px; height: 14px; color: var(--green); }
 
-        .recipe-details summary {
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--green);
-        }
-
-        .recipe-details h4 {
-            margin: 14px 0 7px;
-            font-size: 13px;
-        }
-
+        .recipe-details { border-top: 1px solid var(--border); padding-top: 14px; margin-top: 12px; }
+        .recipe-details summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--green); }
+        .recipe-details h4 { margin: 14px 0 7px; font-size: 13px; }
         .recipe-details ul, .recipe-details ol {
             padding-left: 20px;
             font-size: 13px;
@@ -469,12 +396,19 @@
         }
 
         .empty-state .empty-icon {
-            font-size: 42px;
-            margin-bottom: 12px;
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            background: var(--green-light);
+            color: var(--green);
+            display: grid;
+            place-items: center;
+            margin: 0 auto 15px;
         }
 
-        /* NAVIGATION */
+        .empty-state .empty-icon svg { width: 27px; height: 27px; }
 
+        /* NAVIGATION */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -505,19 +439,13 @@
             gap: 4px;
             font-size: 11px;
             padding: 5px 12px;
+            min-width: 65px;
         }
 
-        .nav-button span {
-            font-size: 20px;
-        }
-
-        .nav-button.active {
-            color: var(--green);
-            font-weight: 700;
-        }
+        .nav-button svg { width: 21px; height: 21px; }
+        .nav-button.active { color: var(--green); font-weight: 700; }
 
         /* MODAL PROFIL */
-
         .modal {
             display: none;
             position: fixed;
@@ -529,24 +457,18 @@
             padding: 20px;
         }
 
-        .modal.show {
-            display: flex;
-        }
+        .modal.show { display: flex; }
 
         .modal-content {
             background: white;
             border-radius: 20px;
             padding: 25px;
             width: min(380px, 100%);
+            box-shadow: 0 20px 60px rgba(0,0,0,.15);
         }
 
-        .modal-content h2 {
-            margin-bottom: 10px;
-        }
-
-        .modal-content button {
-            margin-top: 15px;
-        }
+        .modal-content h2 { margin-bottom: 10px; }
+        .modal-content button { margin-top: 15px; }
 
         .logout-button {
             width: 100%;
@@ -569,35 +491,17 @@
         }
 
         @media (max-width: 700px) {
-            .hero {
-                padding: 25px;
-            }
-
-            .hero-image {
-                display: none;
-            }
-
-            .fridge-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .recipes-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .quick-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .recipe-photo {
-                height: 210px;
-            }
+            .hero { padding: 25px; }
+            .hero-image { display: none; }
+            .fridge-layout { grid-template-columns: 1fr; }
+            .recipes-grid { grid-template-columns: 1fr; }
+            .quick-grid { grid-template-columns: 1fr 1fr; }
+            .recipe-photo { height: 210px; }
         }
 
         @media (max-width: 380px) {
-            .quick-grid {
-                grid-template-columns: 1fr;
-            }
+            .quick-grid { grid-template-columns: 1fr; }
+            .nav-button { min-width: 58px; padding-left: 7px; padding-right: 7px; }
         }
     </style>
 </head>
@@ -606,31 +510,34 @@
 
 <header class="container">
     <div class="logo">Fridge<span>Chef</span>.</div>
-    <button class="profile-button" id="profileButton" aria-label="Mon profil">♙</button>
+    <button class="profile-button" id="profileButton" aria-label="Mon profil">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M5 20c.7-3.4 3.2-5.2 7-5.2s6.3 1.8 7 5.2"></path>
+        </svg>
+    </button>
 </header>
 
 <main class="container">
 
     <!-- ACCUEIL -->
     <section id="homePage" class="page active">
-    <div class="page-intro">
-        <div class="eyebrow">Ton espace cuisine</div>
-        <h1>Bonjour <span id="userFirstName">!</span></h1>
-        <p>Qu'est-ce qu'on mange aujourd'hui ?</p>
-    </div>
-
-    <div class="hero">
-        <div class="hero-content">
-            <h1>Ton frigo a sûrement de bonnes idées.</h1>
-            <p>Photographie tes aliments et découvre des recettes réalisées uniquement avec ce que tu possèdes.</p>
-            <button class="primary-button" data-open="fridgePage">
-                Découvrir mes recettes →
-            </button>
+        <div class="page-intro">
+            <div class="eyebrow">Ton espace cuisine</div>
+            <h1>Bonjour <span id="userFirstName">!</span></h1>
+            <p>Qu'est-ce qu'on mange aujourd'hui ?</p>
         </div>
-        <img class="hero-image"
-             src="https://images.unsplash.com/photo-1547592180-85f173990554?w=700"
-             alt="Plat de cuisine">
-    </div>
+
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Ton frigo a sûrement de bonnes idées.</h1>
+                <p>Photographie tes aliments et découvre des recettes réalisées uniquement avec ce que tu possèdes.</p>
+                <button class="primary-button" data-open="fridgePage">Découvrir mes recettes →</button>
+            </div>
+            <img class="hero-image"
+                 src="https://images.unsplash.com/photo-1547592180-85f173990554?w=700"
+                 alt="Plat de cuisine">
+        </div>
 
         <div class="section-heading">
             <div class="eyebrow">Commencer</div>
@@ -639,27 +546,35 @@
 
         <div class="quick-grid">
             <div class="quick-card" data-open="fridgePage">
-                <div class="quick-icon">📸</div>
+                <div class="quick-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M5 11h14M9 7v1M9 15v2"></path></svg>
+                </div>
                 <h3>Mon frigo</h3>
                 <p>Photographie ton réfrigérateur pour détecter tes ingrédients.</p>
             </div>
 
             <div class="quick-card" data-open="recipesPage">
-                <div class="quick-icon">🍽️</div>
+                <div class="quick-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16a8 8 0 0 1-16 0Z"></path><path d="M3 11h18M12 3v2M7 5l1.5 2M17 5l-1.5 2"></path></svg>
+                </div>
                 <h3>Mes recettes</h3>
                 <p>Retrouve les recettes générées avec tes ingrédients.</p>
             </div>
 
             <div class="quick-card" data-open="favoritesPage">
-                <div class="quick-icon">♡</div>
+                <div class="quick-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.8c0 5.2-8.8 10-8.8 10s-8.8-4.8-8.8-10A4.8 4.8 0 0 1 12 6.5a4.8 4.8 0 0 1 8.8 2.3Z"></path></svg>
+                </div>
                 <h3>Mes favoris</h3>
                 <p>Retrouve les recettes que tu as enregistrées.</p>
             </div>
 
             <div class="quick-card" data-open="fridgePage">
-                <div class="quick-icon">🥕</div>
+                <div class="quick-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-2.7 3.6-6 7.1-6 11a6 6 0 0 0 12 0c0-3.9-3.3-7.4-6-11Z"></path><path d="M9.5 15.5c.3 1.2 1.1 1.8 2.5 2"></path></svg>
+                </div>
                 <h3>Mes ingrédients</h3>
-                <p>Vérifie et modifie la liste des aliments détectés.</p>
+                <p>Vérifie et modifie les aliments détectés.</p>
             </div>
         </div>
     </section>
@@ -678,21 +593,19 @@
                 <p>Essaie de bien montrer les aliments pour faciliter leur détection.</p>
 
                 <label class="upload-zone" for="photoInput">
-                    <div class="upload-icon">📷</div>
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3v12H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>
+                    </div>
                     <strong>Ajouter une photo</strong>
                     <p>Appuie ici pour choisir une image</p>
                     <small>JPG, PNG · 5 Mo maximum</small>
                 </label>
 
                 <input type="file" id="photoInput" accept="image/jpeg,image/png">
-
                 <img id="photoPreview" class="preview" alt="Aperçu de la photo du frigo">
 
-                <button id="scanButton" class="primary-button full-button" disabled>
-                    Analyser mon frigo
-                </button>
-
-                <div id="scanStatus" class="status"></div>
+                <button id="scanButton" class="primary-button full-button" disabled>Analyser mon frigo</button>
+                <div id="scanStatus" class="status" aria-live="polite"></div>
             </div>
 
             <div class="panel">
@@ -704,8 +617,8 @@
                 </div>
 
                 <div class="add-ingredient">
-                    <input id="newIngredient" type="text" placeholder="Ajouter un ingrédient...">
-                    <button id="addIngredientButton" class="small-button">+</button>
+                    <input id="newIngredient" type="text" placeholder="Ajouter un ingrédient..." aria-label="Nouvel ingrédient">
+                    <button id="addIngredientButton" class="small-button" aria-label="Ajouter l'ingrédient">+</button>
                 </div>
 
                 <div class="servings-area">
@@ -720,11 +633,8 @@
                     </select>
                 </div>
 
-                <button id="generateButton" class="primary-button full-button">
-                    Générer mes recettes →
-                </button>
-
-                <div id="recipeStatus" class="status"></div>
+                <button id="generateButton" class="primary-button full-button">Générer mes recettes →</button>
+                <div id="recipeStatus" class="status" aria-live="polite"></div>
             </div>
         </div>
     </section>
@@ -739,7 +649,9 @@
 
         <div id="recipesContainer">
             <div class="empty-state">
-                <div class="empty-icon">🍽️</div>
+                <div class="empty-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16a8 8 0 0 1-16 0Z"></path><path d="M3 11h18M12 3v2"></path></svg>
+                </div>
                 <h2>Pas encore de recettes</h2>
                 <p>Photographie ton frigo pour découvrir ce que tu peux cuisiner.</p>
                 <button class="primary-button" data-open="fridgePage">Photographier mon frigo</button>
@@ -751,13 +663,15 @@
     <section id="favoritesPage" class="page">
         <div class="page-intro">
             <div class="eyebrow">Mes recettes préférées</div>
-            <h1>Mes favoris ♡</h1>
+            <h1>Mes favoris</h1>
             <p>Toutes les recettes que tu souhaites garder.</p>
         </div>
 
         <div id="favoritesContainer">
             <div class="empty-state">
-                <div class="empty-icon">♡</div>
+                <div class="empty-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.8c0 5.2-8.8 10-8.8 10s-8.8-4.8-8.8-10A4.8 4.8 0 0 1 12 6.5a4.8 4.8 0 0 1 8.8 2.3Z"></path></svg>
+                </div>
                 <h2>Aucun favori pour le moment</h2>
                 <p>Ajoute tes recettes préférées en cliquant sur le cœur.</p>
             </div>
@@ -767,19 +681,23 @@
 </main>
 
 <!-- NAVIGATION -->
-<nav class="bottom-nav">
+<nav class="bottom-nav" aria-label="Navigation principale">
     <div class="nav-inner">
         <button class="nav-button active" data-open="homePage">
-            <span>⌂</span>Accueil
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9M9 20v-7h6v7"></path></svg>
+            Accueil
         </button>
         <button class="nav-button" data-open="fridgePage">
-            <span>▣</span>Mon frigo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M5 11h14M9 7v1M9 15v2"></path></svg>
+            Mon frigo
         </button>
         <button class="nav-button" data-open="recipesPage">
-            <span>♨</span>Recettes
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16a8 8 0 0 1-16 0Z"></path><path d="M3 11h18M12 3v2M7 5l1.5 2M17 5l-1.5 2"></path></svg>
+            Recettes
         </button>
         <button class="nav-button" data-open="favoritesPage">
-            <span>♡</span>Favoris
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.8c0 5.2-8.8 10-8.8 10s-8.8-4.8-8.8-10A4.8 4.8 0 0 1 12 6.5a4.8 4.8 0 0 1 8.8 2.3Z"></path></svg>
+            Favoris
         </button>
     </div>
 </nav>
@@ -798,8 +716,9 @@
     import { supabase } from "./supabase.js";
 
     const API_URL = "https://fridgechef-ui71.onrender.com";
-
     const $ = (id) => document.getElementById(id);
+
+    const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800";
 
     let session = null;
     let selectedPhoto = null;
@@ -809,39 +728,33 @@
 
     // AUTHENTIFICATION
     async function initializeApp() {
-    const { data, error } = await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getSession();
 
-    if (error || !data.session) {
-        window.location.replace("./auth.html");
-        return false;
+        if (error || !data.session) {
+            window.location.replace("./auth.html");
+            return false;
+        }
+
+        session = data.session;
+
+        // Récupérer le prénom enregistré lors de l'inscription
+        const metadata = session.user.user_metadata || {};
+        const fullName = metadata.full_name || metadata.name || "";
+        const firstName =
+            metadata.first_name ||
+            metadata.prenom ||
+            metadata.firstname ||
+            metadata.given_name ||
+            fullName.split(" ")[0] ||
+            "";
+
+        $("userFirstName").textContent = firstName || "!";
+
+        $("profileEmail").textContent = session.user.email || "Compte connecté";
+
+        await loadFavorites();
+        return true;
     }
-
-    session = data.session;
-
-    // Récupérer le prénom enregistré lors de l'inscription
-    const metadata = session.user.user_metadata || {};
-    const firstName =
-        metadata.first_name ||
-        metadata.prenom ||
-        metadata.firstname ||
-        "";
-
-    // Afficher Bonjour + prénom
-    const welcome = $("userFirstName");
-
-    if (welcome) {
-        welcome.textContent = firstName ? firstName : "!";
-    }
-
-    // Afficher l'adresse e-mail dans le profil
-    $("profileEmail").textContent =
-        session.user.email || "Compte connecté";
-
-    // Charger les favoris du compte
-    await loadFavorites();
-
-    return true;
-}
 
     async function getToken() {
         const { data, error } = await supabase.auth.getSession();
@@ -861,13 +774,13 @@
             page.classList.remove("active");
         });
 
-        $(pageId).classList.add("active");
+        const page = $(pageId);
+        if (!page) return;
+
+        page.classList.add("active");
 
         document.querySelectorAll(".nav-button").forEach(button => {
-            button.classList.toggle(
-                "active",
-                button.dataset.open === pageId
-            );
+            button.classList.toggle("active", button.dataset.open === pageId);
         });
 
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -878,9 +791,7 @@
     }
 
     document.querySelectorAll("[data-open]").forEach(button => {
-        button.addEventListener("click", () => {
-            showPage(button.dataset.open);
-        });
+        button.addEventListener("click", () => showPage(button.dataset.open));
     });
 
     // PROFIL
@@ -892,7 +803,7 @@
         $("profileModal").classList.remove("show");
     });
 
-    $("profileModal").addEventListener("click", (event) => {
+    $("profileModal").addEventListener("click", event => {
         if (event.target === $("profileModal")) {
             $("profileModal").classList.remove("show");
         }
@@ -904,21 +815,18 @@
     });
 
     // PHOTO DU FRIGO
-    $("photoInput").addEventListener("change", (event) => {
+    $("photoInput").addEventListener("change", event => {
         const file = event.target.files[0];
-
         if (!file) return;
 
         if (!["image/jpeg", "image/png"].includes(file.type)) {
-            $("scanStatus").textContent =
-                "Choisis une image au format JPG ou PNG.";
+            $("scanStatus").textContent = "Choisis une image au format JPG ou PNG.";
             event.target.value = "";
             return;
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            $("scanStatus").textContent =
-                "La photo ne doit pas dépasser 5 Mo.";
+            $("scanStatus").textContent = "La photo ne doit pas dépasser 5 Mo.";
             event.target.value = "";
             return;
         }
@@ -926,7 +834,13 @@
         selectedPhoto = file;
 
         const preview = $("photoPreview");
-        preview.src = URL.createObjectURL(file);
+        if (preview.dataset.objectUrl) {
+            URL.revokeObjectURL(preview.dataset.objectUrl);
+        }
+
+        const objectUrl = URL.createObjectURL(file);
+        preview.dataset.objectUrl = objectUrl;
+        preview.src = objectUrl;
         preview.style.display = "block";
 
         $("scanButton").disabled = false;
@@ -940,20 +854,16 @@
         const button = $("scanButton");
         button.disabled = true;
         button.textContent = "Analyse en cours...";
-        $("scanStatus").textContent =
-            "FridgeChef recherche les aliments visibles...";
+        $("scanStatus").textContent = "FridgeChef recherche les aliments visibles...";
 
         try {
             const token = await getToken();
             const formData = new FormData();
-
             formData.append("image", selectedPhoto);
 
             const response = await fetch(`${API_URL}/scan`, {
                 method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
+                headers: { Authorization: `Bearer ${token}` },
                 body: formData
             });
 
@@ -969,15 +879,14 @@
 
             renderIngredients();
 
-            $("scanStatus").textContent =
-                ingredients.length
-                    ? `${ingredients.length} ingrédient(s) détecté(s). Vérifie la liste !`
-                    : "Aucun ingrédient détecté. Essaie avec une autre photo.";
+            $("scanStatus").textContent = ingredients.length
+                ? `${ingredients.length} ingrédient(s) détecté(s). Vérifie la liste !`
+                : "Aucun ingrédient détecté. Essaie avec une autre photo.";
 
         } catch (error) {
-            $("scanStatus").textContent = error.message;
+            $("scanStatus").textContent = error.message || "Une erreur est survenue.";
         } finally {
-            button.disabled = false;
+            button.disabled = !selectedPhoto;
             button.textContent = "Analyser mon frigo";
         }
     });
@@ -988,8 +897,7 @@
         container.innerHTML = "";
 
         if (ingredients.length === 0) {
-            container.innerHTML =
-                '<p class="muted-small">Aucun ingrédient pour le moment.</p>';
+            container.innerHTML = '<p class="muted-small">Aucun ingrédient pour le moment.</p>';
             return;
         }
 
@@ -1019,16 +927,12 @@
     function addIngredient() {
         const input = $("newIngredient");
         const value = input.value.trim();
-
         if (!value) return;
 
-        const exists = ingredients.some(
-            item => item.toLowerCase() === value.toLowerCase()
-        );
+        const exists = ingredients.some(item => item.toLowerCase() === value.toLowerCase());
 
         if (exists) {
-            $("recipeStatus").textContent =
-                "Cet ingrédient est déjà dans la liste.";
+            $("recipeStatus").textContent = "Cet ingrédient est déjà dans la liste.";
             return;
         }
 
@@ -1040,25 +944,23 @@
 
     $("addIngredientButton").addEventListener("click", addIngredient);
 
-    $("newIngredient").addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            addIngredient();
-        }
+    $("newIngredient").addEventListener("keydown", event => {
+        if (event.key === "Enter") addIngredient();
     });
 
     // GÉNÉRATION DES RECETTES
     $("generateButton").addEventListener("click", async () => {
         if (ingredients.length === 0) {
-            $("recipeStatus").textContent =
-                "Ajoute ou détecte au moins un ingrédient.";
+            $("recipeStatus").textContent = "Ajoute ou détecte au moins un ingrédient.";
             return;
         }
 
         const button = $("generateButton");
+        const selectedServings = Number($("servings").value);
+
         button.disabled = true;
         button.textContent = "Création des recettes...";
-        $("recipeStatus").textContent =
-            "Recherche des recettes possibles...";
+        $("recipeStatus").textContent = "Recherche des recettes possibles...";
 
         try {
             const token = await getToken();
@@ -1071,7 +973,7 @@
                 },
                 body: JSON.stringify({
                     ingredients: ingredients,
-                    servings: Number($("servings").value)
+                    servings: selectedServings
                 })
             });
 
@@ -1081,22 +983,35 @@
                 throw new Error(result.detail || "Impossible de générer les recettes.");
             }
 
+            // On conserve exactement le nombre de personnes choisi à l'écran.
             recipes = Array.isArray(result.recipes)
-                ? result.recipes
+                ? result.recipes.map(recipe => ({
+                    ...recipe,
+                    servings: selectedServings
+                }))
                 : [];
 
             renderRecipes();
             $("recipeStatus").textContent = "";
-
             showPage("recipesPage");
 
         } catch (error) {
-            $("recipeStatus").textContent = error.message;
+            $("recipeStatus").textContent = error.message || "Une erreur est survenue.";
         } finally {
             button.disabled = false;
             button.textContent = "Générer mes recettes →";
         }
     });
+
+    // ICÔNE CŒUR POUR LES RECETTES
+    function heartIcon(filled = false) {
+        return `
+            <svg viewBox="0 0 24 24" fill="${filled ? "currentColor" : "none"}"
+                 stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20.8 8.8c0 5.2-8.8 10-8.8 10s-8.8-4.8-8.8-10A4.8 4.8 0 0 1 12 6.5a4.8 4.8 0 0 1 8.8 2.3Z"></path>
+            </svg>`;
+    }
 
     // CRÉATION D'UNE CARTE RECETTE
     function createRecipeCard(recipe) {
@@ -1106,11 +1021,12 @@
         const image = document.createElement("img");
         image.className = "recipe-photo";
         image.alt = recipe.title || "Recette";
+        image.loading = "lazy";
+        image.src = recipe.image_url || FALLBACK_IMAGE;
 
-        image.src = recipe.image_url || "";
         image.onerror = () => {
-            image.src =
-                "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800";
+            image.onerror = null;
+            image.src = FALLBACK_IMAGE;
         };
 
         const content = document.createElement("div");
@@ -1127,19 +1043,12 @@
         favoriteButton.className = "favorite-button";
         favoriteButton.type = "button";
 
-        const isFavorite = favorites.some(
-            item => item.recipe?.title === recipe.title
-        );
+        const isFavorite = favorites.some(item => item.recipe?.title === recipe.title);
+        favoriteButton.innerHTML = heartIcon(isFavorite);
+        favoriteButton.setAttribute("aria-label", isFavorite ? "Retirer des favoris" : "Ajouter aux favoris");
+        favoriteButton.setAttribute("aria-pressed", String(isFavorite));
 
-        favoriteButton.textContent = isFavorite ? "♥" : "♡";
-        favoriteButton.setAttribute(
-            "aria-label",
-            isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"
-        );
-
-        favoriteButton.addEventListener("click", () => {
-            toggleFavorite(recipe);
-        });
+        favoriteButton.addEventListener("click", () => toggleFavorite(recipe));
 
         top.append(title, favoriteButton);
 
@@ -1147,11 +1056,10 @@
         meta.className = "recipe-meta";
 
         const time = document.createElement("span");
-        time.textContent = `◷ ${recipe.time_minutes || "?"} min`;
+        time.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>${escapeHtml(recipe.time_minutes || "?")} min`;
 
         const servings = document.createElement("span");
-        servings.textContent =
-            `♧ ${recipe.servings || 2} personne(s)`;
+        servings.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3"></circle><path d="M3 20c.5-3 2.5-5 6-5s5.5 2 6 5M17 11a3 3 0 1 0 0-6M17 15c2.3.2 3.6 1.8 4 5"></path></svg>${Number(recipe.servings) || 2} personne(s)`;
 
         meta.append(time, servings);
 
@@ -1166,10 +1074,9 @@
 
         const ingredientsList = document.createElement("ul");
 
-        (recipe.ingredients || []).forEach(item => {
+        (Array.isArray(recipe.ingredients) ? recipe.ingredients : []).forEach(item => {
             const li = document.createElement("li");
-            li.textContent =
-                `${item.name || ""} — ${item.quantity || ""}`;
+            li.textContent = `${item.name || ""} — ${item.quantity || ""}`;
             ingredientsList.appendChild(li);
         });
 
@@ -1178,20 +1085,13 @@
 
         const stepsList = document.createElement("ol");
 
-        (recipe.steps || []).forEach(step => {
+        (Array.isArray(recipe.steps) ? recipe.steps : []).forEach(step => {
             const li = document.createElement("li");
             li.textContent = step;
             stepsList.appendChild(li);
         });
 
-        details.append(
-            summary,
-            ingredientsTitle,
-            ingredientsList,
-            stepsTitle,
-            stepsList
-        );
-
+        details.append(summary, ingredientsTitle, ingredientsList, stepsTitle, stepsList);
         content.append(top, meta, details);
         card.append(image, content);
 
@@ -1206,27 +1106,27 @@
         if (recipes.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    <div class="empty-icon">🥕</div>
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-2.7 3.6-6 7.1-6 11a6 6 0 0 0 12 0c0-3.9-3.3-7.4-6-11Z"></path></svg>
+                    </div>
                     <h2>Aucune recette trouvée</h2>
                     <p>Essaie avec davantage d'ingrédients.</p>
-                </div>
-            `;
+                </div>`;
             return;
         }
 
         const grid = document.createElement("div");
         grid.className = "recipes-grid";
-
-        recipes.forEach(recipe => {
-            grid.appendChild(createRecipeCard(recipe));
-        });
-
+        recipes.forEach(recipe => grid.appendChild(createRecipeCard(recipe)));
         container.appendChild(grid);
     }
 
     // FAVORIS SUPABASE
     async function loadFavorites() {
         if (!session) return;
+
+        const container = $("favoritesContainer");
+        container.innerHTML = '<div class="empty-state"><p>Chargement de tes favoris...</p></div>';
 
         const { data, error } = await supabase
             .from("favorites")
@@ -1235,27 +1135,24 @@
             .order("created_at", { ascending: false });
 
         if (error) {
-            $("favoritesContainer").innerHTML = `
+            container.innerHTML = `
                 <div class="empty-state">
                     <h2>Impossible de charger les favoris</h2>
                     <p>${escapeHtml(error.message)}</p>
-                </div>
-            `;
+                </div>`;
             return;
         }
 
-        favorites = data || [];
+        favorites = Array.isArray(data) ? data : [];
         renderFavorites();
 
-        if (recipes.length) {
-            renderRecipes();
-        }
+        if (recipes.length) renderRecipes();
     }
 
     async function toggleFavorite(recipe) {
-        const existing = favorites.find(
-            item => item.recipe?.title === recipe.title
-        );
+        if (!session) return;
+
+        const existing = favorites.find(item => item.recipe?.title === recipe.title);
 
         if (existing) {
             const { error } = await supabase
@@ -1265,7 +1162,7 @@
                 .eq("user_id", session.user.id);
 
             if (error) {
-                alert("Impossible de retirer ce favori.");
+                alert("Impossible de retirer ce favori : " + error.message);
                 return;
             }
         } else {
@@ -1277,7 +1174,7 @@
                 });
 
             if (error) {
-                alert("Impossible d'enregistrer ce favori.");
+                alert("Impossible d'enregistrer ce favori : " + error.message);
                 return;
             }
         }
@@ -1293,11 +1190,10 @@
         if (favorites.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
-                    <div class="empty-icon">♡</div>
+                    <div class="empty-icon">${heartIcon(false)}</div>
                     <h2>Aucun favori pour le moment</h2>
                     <p>Ajoute tes recettes préférées en cliquant sur le cœur.</p>
-                </div>
-            `;
+                </div>`;
             return;
         }
 
@@ -1309,6 +1205,11 @@
                 grid.appendChild(createRecipeCard(item.recipe));
             }
         });
+
+        if (!grid.children.length) {
+            container.innerHTML = '<div class="empty-state"><h2>Aucun favori affichable</h2></div>';
+            return;
+        }
 
         container.appendChild(grid);
     }
