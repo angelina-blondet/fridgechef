@@ -187,15 +187,16 @@ form.addEventListener("submit", async (e) => {
 
         if (isRegister) {
 
-            result = await supabase.auth.signUp({
-                email: email.value.trim(),
-                password: password.value,
-                options: {
-                    data: {
-                        first_name: prenom.value.trim()
-                    }
-                }
-            });
+           result = await supabase.auth.signUp({
+    email: email.value.trim(),
+    password: password.value,
+    options: {
+        emailRedirectTo: "https://angelina-blondet.github.io/fridgechef/",
+        data: {
+            first_name: prenom.value.trim()
+        }
+    }
+});
 
             if (result.error) throw result.error;
 
