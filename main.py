@@ -147,14 +147,22 @@ class RecipeRequest(BaseModel):
 @app.post("/recipes")
 async def recipes(req: RecipeRequest, _: str = Depends(current_user)):
     fridge = [norm(i) for i in req.ingredients]
+    
     system = (
         'Réponds UNIQUEMENT par un JSON : {"recipes": [{"title": str (français), '
-        '"image_query": str (nom du plat en anglais, ex: "zucchini gratin"), "time_minutes": int, '
+        '"image_query": str (nom du plat en anglais), "time_minutes": int, '
         '"servings": int, "ingredients": [{"name": str, "quantity": str}], "steps": [str]}]}. '
-        "RÈGLE ABSOLUE : n'utilise QUE les ingrédients de la liste fournie, avec leur nom exact. "
-        "Seuls ajouts permis : sel, poivre, eau. Aucun autre ingrédient, jamais. "
-        "Propose jusqu'à 4 plats réalisables ; moins si c'est impossible, liste vide si aucun."
+        "RÈGLE ABSOLUE : utilise uniquement les ingrédients présents dans la liste fournie. "
+        "Aucun ingrédient supplémentaire n'est autorisé, même pas le sel, le poivre, "
+        "l'eau, l'huile, le beurre ou le lait. "
+        "IMPORTANT : propose aussi des recettes très simples avec un seul ingrédient "
+        "si possible. Par exemple, avec uniquement des œufs : œufs au plat, "
+        "œufs brouillés nature ou omelette nature, sans aucun ajout. "
+        "Les étapes doivent expliquer comment cuisiner sans ingrédient supplémentaire. "
+        "Propose jusqu'à 4 recettes réalisables, moins si nécessaire, "
+        "et une liste vide uniquement si aucune recette n'est possible."
     )
+
     msg = "Ingrédients du frigo : " + ", ".join(i[:50] for i in req.ingredients)
     out = parse_json(await ask(msg, system, max_tokens=3500))
 
