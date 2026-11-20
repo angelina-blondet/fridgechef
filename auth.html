@@ -187,24 +187,20 @@ form.addEventListener("submit", async (e) => {
 
         if (isRegister) {
 
-           result = await supabase.auth.signUp({
+           result = await supabase.auth.signInWithPassword({
     email: email.value.trim(),
-    password: password.value,
-    options: {
-        emailRedirectTo: "https://angelina-blondet.github.io/fridgechef/",
-        data: {
-            first_name: prenom.value.trim()
-        }
-    }
+    password: password.value
 });
 
-            if (result.error) throw result.error;
+console.log("ERREUR CONNEXION :", result.error);
+console.log("SESSION CONNEXION :", result.data?.session);
+console.log("UTILISATEUR :", result.data?.user);
 
-            if (!result.data.session) {
-                message.textContent =
-                    "Compte créé ! Vérifiez votre boîte mail pour confirmer votre adresse.";
-                return;
-            }
+if (result.error) throw result.error;
+
+if (!result.data.session) {
+    throw new Error("Aucune session créée après connexion.");
+}
 
         } else {
 
