@@ -199,5 +199,40 @@ if ("serviceWorker" in navigator) {
     });
 }
 </script>
+    
+<script type="module">
+import { supabase } from "./supabase.js";
+
+// Vérifier la connexion
+const { data, error } = await supabase.auth.getSession();
+
+if (error || !data.session) {
+    window.location.href = "./auth.html";
+} else {
+
+    const user = data.session.user;
+
+    // Afficher le prénom
+    const prenom = user.user_metadata?.first_name || "vous";
+    document.getElementById("welcomeMessage").textContent =
+        `Bonjour ${prenom} !`;
+
+    // Ouvrir le profil
+    document.getElementById("profileButton").addEventListener("click", () => {
+
+        const choix = confirm(
+            `Profil FridgeChef\n\nPrénom : ${prenom}\nE-mail : ${user.email}\n\nVoulez-vous vous déconnecter ?`
+        );
+
+        if (choix) {
+            supabase.auth.signOut().then(() => {
+                window.location.href = "./auth.html";
+            });
+        }
+
+    });
+}
+</script>
+
 </body>
 </html>
