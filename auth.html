@@ -207,10 +207,16 @@ form.addEventListener("submit", async (e) => {
 
         } else {
 
-            result = await supabase.auth.signInWithPassword({
-                email: email.value.trim(),
-                password: password.value
-            });
+            result = await supabase.auth.signUp({
+    email: email.value.trim(),
+    password: password.value,
+    options: {
+        emailRedirectTo: "https://angelina-blondet.github.io/fridgechef/index.html",
+        data: {
+            first_name: prenom.value.trim()
+        }
+    }
+});
 
             if (result.error) throw result.error;
 
