@@ -281,26 +281,46 @@ async def recipes(
         '"ingredients": [{"name": str, "quantity": str}], '
         '"steps": [str]}]}. '
 
+        "OBJECTIF : proposer de véritables recettes de cuisine, "
+        "qui permettent de préparer un plat réel et appétissant. "
+
+        "Chaque recette doit obligatoirement utiliser au moins "
+        "2 ingrédients différents présents dans la liste du frigo. "
+
+        "INTERDICTION de proposer des boissons, des verres de lait, "
+        "des aliments simplement servis, des aliments seuls, "
+        "ou des préparations qui ne constituent pas un vrai plat. "
+
+        "Ne propose jamais un verre de lait, un bol de lait, "
+        "un aliment simplement coupé ou une recette dont le seul "
+        "but est de consommer un ingrédient tel quel. "
+
         "Tu dois utiliser exclusivement les ingrédients "
         "de la liste fournie. "
 
         "Recopie exactement leurs noms dans les ingrédients "
         "des recettes. "
 
-        "N'ajoute absolument rien : ni sel, ni poivre, ni eau, "
-        "ni huile, ni beurre, ni lait, ni aucun autre ingrédient. "
+        "Aucun ingrédient supplémentaire n'est autorisé, "
+        "même pas le sel, le poivre, l'eau, l'huile, le beurre, "
+        "le lait ou un ingrédient habituellement présent "
+        "dans une cuisine, sauf s'il figure dans la liste. "
 
-        "Cherche d'abord les recettes réalisables avec un seul "
-        "ingrédient, puis avec deux ou trois ingrédients. "
+        "Les quantités doivent correspondre aux ingrédients "
+        "réellement disponibles et au nombre de personnes. "
 
-        "Avec uniquement des œufs, propose par exemple "
-        "une omelette nature, des œufs au plat ou "
-        "des œufs brouillés nature. "
+        "Les étapes doivent expliquer une véritable préparation "
+        "culinaire avec les ingrédients disponibles. "
 
-        "Ne refuse pas de proposer une recette simplement "
-        "parce qu'elle est simple. "
+        "Privilégie les plats principaux, les plats chauds, "
+        "les plats cuisinés et les préparations complètes. "
 
-        "Les étapes doivent être adaptées aux ingrédients disponibles. "
+        "Ne crée pas de recette artificielle simplement pour "
+        "atteindre le nombre maximum de recettes. "
+
+        "Si les ingrédients disponibles ne permettent pas "
+        "de préparer un véritable plat avec au moins "
+        "2 ingrédients différents, retourne une liste vide. "
 
         f"Chaque recette doit être prévue pour exactement "
         f"{req.servings} personne(s). "
@@ -311,14 +331,16 @@ async def recipes(
 
         "Propose jusqu'à 4 recettes différentes et réalisables. "
 
-        "Retourne une liste vide uniquement si aucune recette "
-        "n'est possible."
+        "Retourne une liste vide uniquement si aucun véritable "
+        "plat ne peut être préparé avec les ingrédients disponibles."
     )
 
     msg = (
         "Ingrédients du frigo : "
         + ", ".join(i[:50] for i in req.ingredients)
         + f". Nombre de personnes : {req.servings}."
+        + " Je veux de vrais plats cuisinés, pas des boissons "
+        "ni des aliments simplement servis."
     )
 
     out = parse_json(
@@ -329,15 +351,37 @@ async def recipes(
 
     for r in out.get("recipes", []):
         try:
-            if (
-                r["steps"]
-                and all(
-                    allowed(i["name"], fridge)
-                    for i in r["ingredients"]
-                )
+            ingredients = r["ingredients"]
+            steps = r["steps"]
+
+            # Vérification des ingrédients
+            names = [
+                norm(i["name"])
+                for i in ingredients
+            ]
+
+            # Au moins deux ingrédients différents
+            distinct = set(names)
+
+            if len(distinct) < 2:
+                continue
+
+            # Tous les ingrédients doivent être dans le frigo
+            if not all(
+                allowed(i["name"], fridge)
+                for i in ingredients
             ):
-                r["servings"] = req.servings
-                good.append(r)
+                continue
+
+            # Une recette doit avoir des étapes
+            if not isinstance(steps, list) or not steps:
+                continue
+
+            if not all(isinstance(step, str) and step.strip() for step in steps):
+                continue
+
+            r["servings"] = req.servings
+            good.append(r)
 
         except (KeyError, TypeError):
             continue
