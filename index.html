@@ -1102,6 +1102,7 @@ async function saveCharacter() {
 
         session = data.session;
 
+
         // Récupérer le prénom enregistré lors de l'inscription
         const metadata = session.user.user_metadata || {};
         const fullName = metadata.full_name || metadata.name || "";
