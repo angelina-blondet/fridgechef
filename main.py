@@ -148,20 +148,25 @@ class RecipeRequest(BaseModel):
 async def recipes(req: RecipeRequest, _: str = Depends(current_user)):
     fridge = [norm(i) for i in req.ingredients]
     
-    system = (
-        'Réponds UNIQUEMENT par un JSON : {"recipes": [{"title": str (français), '
-        '"image_query": str (nom du plat en anglais), "time_minutes": int, '
-        '"servings": int, "ingredients": [{"name": str, "quantity": str}], "steps": [str]}]}. '
-        "RÈGLE ABSOLUE : utilise uniquement les ingrédients présents dans la liste fournie. "
-        "Aucun ingrédient supplémentaire n'est autorisé, même pas le sel, le poivre, "
-        "l'eau, l'huile, le beurre ou le lait. "
-        "IMPORTANT : propose aussi des recettes très simples avec un seul ingrédient "
-        "si possible. Par exemple, avec uniquement des œufs : œufs au plat, "
-        "œufs brouillés nature ou omelette nature, sans aucun ajout. "
-        "Les étapes doivent expliquer comment cuisiner sans ingrédient supplémentaire. "
-        "Propose jusqu'à 4 recettes réalisables, moins si nécessaire, "
-        "et une liste vide uniquement si aucune recette n'est possible."
-    )
+    
+system = (
+    'Réponds UNIQUEMENT par un JSON : {"recipes": [{"title": str, '
+    '"image_query": str, "time_minutes": int, "servings": int, '
+    '"ingredients": [{"name": str, "quantity": str}], "steps": [str]}]}. '
+    "Tu dois utiliser exclusivement les ingrédients de la liste fournie. "
+    "Recopie exactement leurs noms dans les ingrédients des recettes. "
+    "N'ajoute absolument rien : ni sel, ni poivre, ni eau, ni huile, "
+    "ni beurre, ni lait, ni aucun autre ingrédient. "
+    "Cherche d'abord les recettes réalisables avec un seul ingrédient, "
+    "puis avec deux ou trois ingrédients. "
+    "Avec uniquement des œufs, propose par exemple une omelette nature, "
+    "des œufs au plat ou des œufs brouillés nature. "
+    "Ne refuse pas de proposer une recette simplement parce qu'elle est simple. "
+    "Les étapes doivent être adaptées aux ingrédients disponibles. "
+    "Propose jusqu'à 4 recettes différentes et réalisables. "
+    "Retourne une liste vide uniquement si aucune recette n'est possible."
+)
+
 
     msg = "Ingrédients du frigo : " + ", ".join(i[:50] for i in req.ingredients)
     out = parse_json(await ask(msg, system, max_tokens=3500))
