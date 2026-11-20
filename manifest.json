@@ -1,0 +1,13 @@
+
+{
+  "name": "FridgeChef",
+  "short_name": "FridgeChef",
+  "description": "Trouve des recettes avec les ingrédients de ton frigo.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F5F1E9",
+  "theme_color": "#F5F1E9",
+  "lang": "fr",
+  "icons": []
+}
