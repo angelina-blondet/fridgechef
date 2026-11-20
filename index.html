@@ -613,17 +613,24 @@
 
     <!-- ACCUEIL -->
     <section id="homePage" class="page active">
-        <div class="hero">
-            <div class="hero-content">
-                <div class="eyebrow">Bienvenue sur FridgeChef</div>
-                <h1>Qu'est-ce qu'on mange aujourd'hui ?</h1>
-                <p>Photographie ton frigo et découvre les recettes que tu peux préparer avec ce que tu as déjà.</p>
-                <button class="primary-button" data-open="fridgePage">Découvrir mes recettes →</button>
-            </div>
-            <img class="hero-image"
-                 src="https://images.unsplash.com/photo-1547592180-85f173990554?w=700"
-                 alt="Plat de cuisine">
+    <div class="page-intro">
+        <div class="eyebrow">Ton espace cuisine</div>
+        <h1>Bonjour <span id="userFirstName">!</span></h1>
+        <p>Qu'est-ce qu'on mange aujourd'hui ?</p>
+    </div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Ton frigo a sûrement de bonnes idées.</h1>
+            <p>Photographie tes aliments et découvre des recettes réalisées uniquement avec ce que tu possèdes.</p>
+            <button class="primary-button" data-open="fridgePage">
+                Découvrir mes recettes →
+            </button>
         </div>
+        <img class="hero-image"
+             src="https://images.unsplash.com/photo-1547592180-85f173990554?w=700"
+             alt="Plat de cuisine">
+    </div>
 
         <div class="section-heading">
             <div class="eyebrow">Commencer</div>
@@ -802,22 +809,39 @@
 
     // AUTHENTIFICATION
     async function initializeApp() {
-        const { data, error } = await supabase.auth.getSession();
+    const { data, error } = await supabase.auth.getSession();
 
-        if (error || !data.session) {
-            window.location.replace("./auth.html");
-            return false;
-        }
-
-        session = data.session;
-
-        $("profileEmail").textContent =
-            session.user.email || "Compte connecté";
-
-        await loadFavorites();
-
-        return true;
+    if (error || !data.session) {
+        window.location.replace("./auth.html");
+        return false;
     }
+
+    session = data.session;
+
+    // Récupérer le prénom enregistré lors de l'inscription
+    const metadata = session.user.user_metadata || {};
+    const firstName =
+        metadata.first_name ||
+        metadata.prenom ||
+        metadata.firstname ||
+        "";
+
+    // Afficher Bonjour + prénom
+    const welcome = $("userFirstName");
+
+    if (welcome) {
+        welcome.textContent = firstName ? firstName : "!";
+    }
+
+    // Afficher l'adresse e-mail dans le profil
+    $("profileEmail").textContent =
+        session.user.email || "Compte connecté";
+
+    // Charger les favoris du compte
+    await loadFavorites();
+
+    return true;
+}
 
     async function getToken() {
         const { data, error } = await supabase.auth.getSession();
