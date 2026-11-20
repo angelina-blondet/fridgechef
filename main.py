@@ -27,7 +27,7 @@ PEXELS_KEY = os.getenv("PEXELS_API_KEY")  # photos des plats (gratuit : pexels.c
 DAILY_LIMIT = 10
 MAX_IMAGE = 5 * 1024 * 1024
 # Seuls ingrédients autorisés EN PLUS de ceux du frigo. Retire-les ou ajoute "huile" si tu veux.
-PANTRY = {"sel", "poivre", "eau"}
+PANTRY = set()
 _usage = defaultdict(list)  # MVP en mémoire. En prod : Redis/Postgres.
 
 
@@ -104,12 +104,8 @@ def norm(s: str) -> str:
     s = unicodedata.normalize("NFD", str(s).lower())
     return "".join(c for c in s if unicodedata.category(c) != "Mn").strip()
 
-
 def allowed(name: str, fridge: list[str]) -> bool:
-    n = norm(name)
-    if n in PANTRY:
-        return True
-    return len(n) >= 3 and any(i and (i in n or n in i) for i in fridge)
+    return norm(name) in fridge
 
 
 async def photo(query: str):
