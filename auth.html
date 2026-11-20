@@ -72,6 +72,11 @@
             cursor: pointer;
         }
 
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
         .switch {
             text-align: center;
             margin-top: 20px;
@@ -103,7 +108,10 @@
 <div class="card">
 
     <h1>FridgeChef</h1>
-    <p class="subtitle" id="subtitle">Bienvenue ! Connectez-vous.</p>
+
+    <p class="subtitle" id="subtitle">
+        Bienvenue ! Connectez-vous.
+    </p>
 
     <form id="authForm">
 
@@ -125,7 +133,7 @@
 
     </form>
 
-    <p id="message"></p>
+    <p id="message" role="status" aria-live="polite"></p>
 
     <p class="switch">
         <span id="switchText">Pas encore de compte ?</span>
@@ -138,18 +146,34 @@
 
 import { supabase } from "./supabase.js";
 
-let isRegister = false;
-
 const form = document.getElementById("authForm");
 const nameField = document.getElementById("nameField");
 const prenom = document.getElementById("prenom");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 const message = document.getElementById("message");
-
 const submitButton = document.getElementById("submitButton");
 const switchButton = document.getElementById("switchButton");
 
+let isRegister = false;
+
+// Vérifier si l'utilisateur est déjà connecté
+async function checkSession() {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error) {
+        console.error("Erreur session :", error);
+        return;
+    }
+
+    if (data.session) {
+        window.location.replace("./index.html");
+    }
+}
+
+checkSession();
+
+// Changer entre connexion et inscription
 switchButton.addEventListener("click", () => {
 
     isRegister = !isRegister;
@@ -162,8 +186,9 @@ switchButton.addEventListener("click", () => {
         : "Se connecter";
 
     document.getElementById("subtitle").textContent =
-        isRegister ? "Créez votre compte FridgeChef."
-                   : "Bienvenue ! Connectez-vous.";
+        isRegister
+            ? "Créez votre compte FridgeChef."
+            : "Bienvenue ! Connectez-vous.";
 
     document.getElementById("switchText").textContent =
         isRegister ? "Déjà un compte ?" : "Pas encore de compte ?";
@@ -174,6 +199,7 @@ switchButton.addEventListener("click", () => {
     message.textContent = "";
 });
 
+// Connexion et inscription
 form.addEventListener("submit", async (e) => {
 
     e.preventDefault();
@@ -183,48 +209,66 @@ form.addEventListener("submit", async (e) => {
 
     try {
 
-        let result;
-
         if (isRegister) {
 
-           result = await supabase.auth.signInWithPassword({
-    email: email.value.trim(),
-    password: password.value
-});
+            const { data, error } = await supabase.auth.signUp({
+                email: email.value.trim(),
+                password: password.value,
+                options: {
+                    emailRedirectTo:
+                        "https://angelina-blondet.github.io/fridgechef/",
+                    data: {
+                        first_name: prenom.value.trim()
+                    }
+                }
+            });
 
-console.log("ERREUR CONNEXION :", result.error);
-console.log("SESSION CONNEXION :", result.data?.session);
-console.log("UTILISATEUR :", result.data?.user);
+            if (error) throw error;
 
-if (result.error) throw result.error;
-
-if (!result.data.session) {
-    throw new Error("Aucune session créée après connexion.");
-}
+            if (!data.session) {
+                message.textContent =
+                    "Compte créé ! Vérifiez votre boîte mail pour confirmer votre adresse.";
+                return;
+            }
 
         } else {
 
-            result = await supabase.auth.signUp({
-    email: email.value.trim(),
-    password: password.value,
-    options: {
-        emailRedirectTo: "https://angelina-blondet.github.io/fridgechef/index.html",
-        data: {
-            first_name: prenom.value.trim()
+            const { data, error } =
+                await supabase.auth.signInWithPassword({
+                    email: email.value.trim(),
+                    password: password.value
+                });
+
+            if (error) throw error;
+
+            if (!data.session) {
+                throw new Error("La connexion n'a pas créé de session.");
+            }
+
+            // Vérifier que la session est bien enregistrée
+            const { data: sessionData, error: sessionError } =
+                await supabase.auth.getSession();
+
+            if (sessionError) throw sessionError;
+
+            if (!sessionData.session) {
+                throw new Error(
+                    "La session n'a pas été enregistrée."
+                );
+            }
+
         }
-    }
-});
 
-            if (result.error) throw result.error;
-            console.log("CONNEXION :", result.data.session);
+        message.textContent = "Connexion réussie ! Ouverture de FridgeChef...";
 
-        }
-
-        window.location.href = "./index.html";
+        window.location.replace("./index.html");
 
     } catch (error) {
 
-        message.textContent = error.message;
+        console.error("Erreur FridgeChef :", error);
+
+        message.textContent = error.message ||
+            "Une erreur est survenue.";
 
     } finally {
 
