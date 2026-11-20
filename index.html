@@ -873,92 +873,120 @@
 
     // PERSONNAGES FRIDGECHEF
 const characters = [
-    // 6 femmes
-    { id: "woman-1", gender: "woman", hair: "bun", color: "#543322", skin: "#efbd9d", glasses: false },
-    { id: "woman-2", gender: "woman", hair: "long", color: "#493020", skin: "#e8b18f", glasses: false },
-    { id: "woman-3", gender: "woman", hair: "bob", color: "#493020", skin: "#edbd9e", glasses: false },
-    { id: "woman-4", gender: "woman", hair: "long", color: "#bd6339", skin: "#f0bd9e", glasses: false },
-    { id: "woman-5", gender: "woman", hair: "short", color: "#33251e", skin: "#d99b7c", glasses: false },
-    { id: "woman-6", gender: "woman", hair: "wavy", color: "#a66b42", skin: "#f0c4a5", glasses: false },
+    { id: "woman-1", name: "Femme 1", hair: "#38251F", style: "bun", skin: "#E8B99A", jacket: "#F3E8D8", glasses: false },
+    { id: "woman-2", name: "Femme 2", hair: "#291B18", style: "long", skin: "#DDA987", jacket: "#E8DCCB", glasses: false },
+    { id: "woman-3", name: "Femme 3", hair: "#493027", style: "bob", skin: "#F0C6A8", jacket: "#D9E2D4", glasses: false },
+    { id: "woman-4", name: "Femme 4", hair: "#B85B37", style: "long", skin: "#F1C5A6", jacket: "#F0DDD0", glasses: false },
+    { id: "woman-5", name: "Femme 5", hair: "#241B19", style: "short", skin: "#C98E70", jacket: "#E8D7C3", glasses: false },
+    { id: "woman-6", name: "Femme 6", hair: "#70432D", style: "wavy", skin: "#E6B99B", jacket: "#DCE4DA", glasses: false },
 
-    // 6 hommes
-    { id: "man-1", gender: "man", hair: "short", color: "#35251e", skin: "#e5ad8c", glasses: false },
-    { id: "man-2", gender: "man", hair: "curly", color: "#bd8a57", skin: "#edc09e", glasses: false },
-    { id: "man-3", gender: "man", hair: "short", color: "#30231d", skin: "#e4b18e", glasses: true },
-    { id: "man-4", gender: "man", hair: "wavy", color: "#493020", skin: "#c98e70", glasses: false },
-    { id: "man-5", gender: "man", hair: "curly", color: "#38251c", skin: "#f0c3a1", glasses: false },
-    { id: "man-6", gender: "man", hair: "short", color: "#a66b42", skin: "#d9a080", glasses: false }
+    { id: "man-1", name: "Homme 1", hair: "#30221D", style: "short", skin: "#DDA987", jacket: "#E8DCCB", glasses: false },
+    { id: "man-2", name: "Homme 2", hair: "#795039", style: "curly", skin: "#EFC5A5", jacket: "#DCE4DA", glasses: false },
+    { id: "man-3", name: "Homme 3", hair: "#38251F", style: "short", skin: "#E2B18F", jacket: "#F0DDD0", glasses: true },
+    { id: "man-4", name: "Homme 4", hair: "#4B3026", style: "wavy", skin: "#C98E70", jacket: "#E8D7C3", glasses: false },
+    { id: "man-5", name: "Homme 5", hair: "#241B19", style: "curly", skin: "#DDA987", jacket: "#DCE4DA", glasses: false },
+    { id: "man-6", name: "Homme 6", hair: "#9A6040", style: "short", skin: "#F0C6A8", jacket: "#E8DCCB", glasses: false }
 ];
 
-let selectedCharacter = "woman-1";
-let savedCharacter = "woman-1";
-
-// Crée un portrait illustré en SVG pour chaque personnage.
 function createCharacterImage(character) {
-    const hair = character.color;
+    const hair = character.hair;
     const skin = character.skin;
+    const jacket = character.jacket;
 
-    let hairShape = "";
+    let hairstyle = "";
 
-    if (character.hair === "bun") {
-        hairShape = `
-            <circle cx="100" cy="30" r="23" fill="${hair}"/>
-            <path d="M48 91 Q39 35 100 34 Q161 35 152 91 L145 130 L55 130Z" fill="${hair}"/>
+    if (character.style === "bun") {
+        hairstyle = `
+            <circle cx="60" cy="25" r="15" fill="${hair}"/>
+            <path d="M24 55 Q18 8 60 10 Q102 8 96 55 L91 88 L29 88Z" fill="${hair}"/>
+            <path d="M29 47 Q60 22 91 47 L87 83 L33 83Z" fill="${hair}"/>
         `;
-    } else if (character.hair === "long") {
-        hairShape = `
-            <path d="M42 91 Q35 24 100 24 Q165 24 158 91 L153 169 L47 169Z" fill="${hair}"/>
+    } else if (character.style === "long") {
+        hairstyle = `
+            <path d="M20 57 Q15 7 60 8 Q105 7 100 57 L104 125 L16 125Z" fill="${hair}"/>
+            <path d="M28 48 Q60 19 92 48 L88 90 L32 90Z" fill="${hair}"/>
         `;
-    } else if (character.hair === "bob") {
-        hairShape = `
-            <path d="M43 91 Q38 23 100 25 Q162 23 157 91 L151 139 Q130 151 100 137 Q70 151 49 139Z" fill="${hair}"/>
+    } else if (character.style === "bob") {
+        hairstyle = `
+            <path d="M17 60 Q13 8 60 8 Q107 8 103 60 L91 105 L29 105Z" fill="${hair}"/>
+            <path d="M26 48 Q60 18 94 48 L91 91 L29 91Z" fill="${hair}"/>
         `;
-    } else if (character.hair === "curly") {
-        hairShape = `
-            <circle cx="65" cy="47" r="23" fill="${hair}"/>
-            <circle cx="91" cy="32" r="24" fill="${hair}"/>
-            <circle cx="119" cy="35" r="25" fill="${hair}"/>
-            <circle cx="143" cy="56" r="22" fill="${hair}"/>
-            <path d="M45 75 Q100 32 155 75 L150 117 L50 117Z" fill="${hair}"/>
+    } else if (character.style === "wavy") {
+        hairstyle = `
+            <path d="M17 62 Q12 7 60 8 Q108 7 103 62
+            Q110 90 97 119 L84 111 L80 88 L40 88
+            L36 112 L22 120 Q10 90 17 62Z" fill="${hair}"/>
+            <path d="M27 48 Q60 18 93 48 L88 91 L32 91Z" fill="${hair}"/>
         `;
-    } else if (character.hair === "wavy") {
-        hairShape = `
-            <path d="M43 91 Q34 25 100 25 Q166 25 157 91
-                     Q171 125 151 159 L138 145 L132 113
-                     Q100 128 68 113 L62 145 L49 159
-                     Q29 125 43 91Z" fill="${hair}"/>
+    } else if (character.style === "curly") {
+        hairstyle = `
+            <g fill="${hair}">
+                <circle cx="28" cy="34" r="16"/>
+                <circle cx="43" cy="20" r="17"/>
+                <circle cx="62" cy="17" r="18"/>
+                <circle cx="81" cy="22" r="17"/>
+                <circle cx="94" cy="39" r="16"/>
+                <path d="M22 45 Q60 15 98 45 L91 73 L29 73Z"/>
+            </g>
         `;
     } else {
-        hairShape = `
-            <path d="M45 92 Q40 25 100 25 Q160 25 155 92
-                     L145 122 Q100 100 55 122Z" fill="${hair}"/>
+        hairstyle = `
+            <path d="M20 59 Q18 8 60 9 Q103 8 100 59 L91 74 L29 74Z" fill="${hair}"/>
+            <path d="M24 46 Q47 12 78 25 Q91 29 96 46 Q66 38 24 52Z" fill="${hair}"/>
         `;
     }
 
-    const glasses = character.glasses ? `
-        <g fill="none" stroke="#49372c" stroke-width="4">
-            <circle cx="77" cy="91" r="15"/>
-            <circle cx="123" cy="91" r="15"/>
-            <path d="M92 91h16 M62 88l-9-4 M138 88l9-4"/>
-        </g>
-    ` : "";
+    return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 150">
+        <defs>
+            <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#F7F0E6"/>
+                <stop offset="100%" stop-color="#E8DCCB"/>
+            </linearGradient>
+            <linearGradient id="face" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="${skin}"/>
+                <stop offset="100%" stop-color="${skin}"/>
+            </linearGradient>
+        </defs>
 
-    const image = `
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-            <rect width="200" height="200" rx="100" fill="#f0d7c2"/>
-            <path d="M30 200 Q38 144 100 145 Q162 144 170 200Z" fill="#fffaf2"/>
-            <path d="M72 143 L100 174 L128 143" fill="none" stroke="#d8c6b2" stroke-width="3"/>
-            <path d="M86 123h28v28H86z" fill="${skin}"/>
-            ${hairShape}
-            <ellipse cx="100" cy="91" rx="43" ry="53" fill="${skin}"/>
-            <path d="M57 77 Q54 37 100 35 Q146 37 143 77 Q125 56 101 57 Q78 56 57 77Z" fill="${hair}"/>
-            <path d="M78 88q7-6 14 0 M108 88q7-6 14 0" fill="none" stroke="#49372c" stroke-width="3" stroke-linecap="round"/>
-            <path d="M98 99l-3 9 7 1" fill="none" stroke="#b87964" stroke-width="2" stroke-linecap="round"/>
-            <path d="M87 116q13 11 26 0" fill="none" stroke="#a75f56" stroke-width="3" stroke-linecap="round"/>
-            ${glasses}
-            <path d="M74 153l26 24 26-24" fill="none" stroke="#d8c6b2" stroke-width="2"/>
-            <circle cx="100" cy="184" r="3" fill="#b58c68"/>
-        </svg>
+        <rect width="120" height="150" rx="18" fill="url(#bg)"/>
+
+        <ellipse cx="60" cy="145" rx="48" ry="35" fill="${jacket}"/>
+        <path d="M42 112 L60 130 L78 112 L91 150 L29 150Z" fill="#FFFFFF" opacity=".75"/>
+        <path d="M47 108 L60 124 L73 108" fill="none" stroke="#D5C7B7" stroke-width="2"/>
+
+        ${hairstyle}
+
+        <path d="M38 47 Q60 31 82 47 L84 81 Q82 108 60 111 Q38 108 36 81Z"
+              fill="url(#face)"/>
+
+        <path d="M36 61 Q28 57 31 73 Q33 81 39 78Z" fill="${skin}"/>
+        <path d="M84 61 Q92 57 89 73 Q87 81 81 78Z" fill="${skin}"/>
+
+        <path d="M43 65 Q50 61 55 65" fill="none" stroke="#533A30" stroke-width="2" stroke-linecap="round"/>
+        <path d="M65 65 Q70 61 77 65" fill="none" stroke="#533A30" stroke-width="2" stroke-linecap="round"/>
+
+        <ellipse cx="49" cy="72" rx="2.5" ry="3" fill="#35251F"/>
+        <ellipse cx="71" cy="72" rx="2.5" ry="3" fill="#35251F"/>
+
+        <path d="M60 73 Q56 84 60 85" fill="none" stroke="#B87962" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M53 93 Q60 98 67 93" fill="none" stroke="#A75D55" stroke-width="2" stroke-linecap="round"/>
+
+        <ellipse cx="43" cy="85" rx="6" ry="3" fill="#D98D7E" opacity=".25"/>
+        <ellipse cx="77" cy="85" rx="6" ry="3" fill="#D98D7E" opacity=".25"/>
+
+        ${character.glasses ? `
+            <g fill="none" stroke="#49362D" stroke-width="2">
+                <rect x="39" y="66" width="19" height="14" rx="5"/>
+                <rect x="62" y="66" width="19" height="14" rx="5"/>
+                <path d="M58 71 L62 71"/>
+            </g>
+        ` : ""}
+
+        <path d="M28 50 Q29 19 60 17 Q91 19 92 50"
+              fill="none" stroke="${hair}" stroke-width="8" stroke-linecap="round"/>
+    </svg>`;
+}
     `;
 
     return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(image);
