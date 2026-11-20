@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F5F1E9">
+    <title>FridgeChef</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #F5F1E9;
+            color: #342D27;
+            padding-bottom: 90px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 20px;
+        }
+
+        header h1 {
+            font-family: Georgia, serif;
+            font-size: 27px;
+        }
+
+        .container {
+            padding: 10px 20px;
+        }
+
+        .welcome h2 {
+            font-family: Georgia, serif;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #81776D;
+            margin-bottom: 22px;
+        }
+
+        .hero {
+            height: 210px;
+            border-radius: 18px;
+            background:
+                linear-gradient(transparent, rgba(0,0,0,.45)),
+                url("https://images.unsplash.com/photo-1547592180-85f173990554?w=900");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            color: white;
+            margin-bottom: 28px;
+        }
+
+        .hero h2 {
+            font-family: Georgia, serif;
+            font-size: 25px;
+        }
+
+        .section-title {
+            font-family: Georgia, serif;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .actions {
+            display: grid;
+            gap: 14px;
+        }
+
+        .action {
+            background: white;
+            border-radius: 15px;
+            padding: 17px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .action img {
+            width: 85px;
+            height: 85px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .action h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .action p {
+            font-size: 13px;
+            color: #81776D;
+        }
+
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 17px 5px;
+            border-top: 1px solid #eee8df;
+        }
+
+        nav a {
+            color: #75695E;
+            text-decoration: none;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        nav span {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>FridgeChef</h1>
+    <span>👤</span>
+</header>
+
+<main class="container">
+
+    <section class="welcome">
+        <h2>Bonjour !</h2>
+        <p>Qu'allons-nous cuisiner aujourd'hui ?</p>
+    </section>
+
+    <section class="hero">
+        <h2>De bons petits plats<br>commencent ici.</h2>
+    </section>
+
+    <h2 class="section-title">Que souhaitez-vous faire ?</h2>
+
+    <section class="actions">
+
+        <a href="#" class="action">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=300" alt="Légumes">
+            <div>
+                <h3>Scanner mon frigo</h3>
+                <p>Identifier mes aliments en photo.</p>
+            </div>
+        </a>
+
+        <a href="#" class="action">
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=300" alt="Plat cuisiné">
+            <div>
+                <h3>Trouver une recette</h3>
+                <p>Cuisiner avec mes ingrédients.</p>
+            </div>
+        </a>
+
+        <a href="#" class="action">
+            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=300" alt="Repas">
+            <div>
+                <h3>Mes favoris</h3>
+                <p>Retrouver mes recettes préférées.</p>
+            </div>
+        </a>
+
+    </section>
+
+</main>
+
+<nav>
+    <a href="#"><span>⌂</span>Accueil</a>
+    <a href="#"><span>▣</span>Mon frigo</a>
+    <a href="#"><span>♨</span>Recettes</a>
+    <a href="#"><span>♡</span>Favoris</a>
+</nav>
+
+</body>
+</html>
