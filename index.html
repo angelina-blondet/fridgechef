@@ -507,6 +507,123 @@
             .quick-grid { grid-template-columns: 1fr; }
             .nav-button { min-width: 58px; padding-left: 7px; padding-right: 7px; }
         }
+        /* SÉLECTION DES PERSONNAGES */
+.profile-modal-content {
+    width: min(520px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.current-character {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 15px;
+    background: #f8f5ef;
+    border-radius: 17px;
+    margin: 16px 0 22px;
+}
+
+.current-character img {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f0eadf;
+}
+
+.current-character strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.current-character p {
+    font-size: 13px;
+}
+
+.character-heading {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 18px 0 12px;
+}
+
+.character-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.character-option {
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 5px;
+    background: #f8f5ef;
+    transition: .2s;
+}
+
+.character-option:hover {
+    transform: translateY(-2px);
+    border-color: #c9d2c0;
+}
+
+.character-option.selected {
+    border-color: var(--green);
+    background: var(--green-light);
+}
+
+.character-option img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.character-check {
+    display: none;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: var(--green);
+    color: white;
+    font-size: 14px;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+}
+
+.character-option.selected .character-check {
+    display: flex;
+}
+
+.profile-avatar-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.profile-actions button {
+    margin-top: 0;
+}
+
+@media (max-width: 380px) {
+    .character-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
     </style>
 </head>
 
@@ -701,12 +818,43 @@
 </nav>
 
 <!-- PROFIL -->
+<!-- PROFIL -->
 <div class="modal" id="profileModal">
-    <div class="modal-content">
+    <div class="modal-content profile-modal-content">
+
         <h2>Mon profil</h2>
-        <p id="profileEmail">Connecté</p>
-        <button id="logoutButton" class="logout-button">Se déconnecter</button>
-        <button id="closeProfile" class="close-button">Fermer</button>
+        <p id="profileEmail">Compte connecté</p>
+
+        <div class="current-character">
+            <img id="currentCharacterImage" src="" alt="Mon personnage">
+            <div>
+                <strong>Mon personnage</strong>
+                <p>Choisis l'avatar qui te représente.</p>
+            </div>
+        </div>
+
+        <div class="character-heading">
+            Choisis ton personnage
+        </div>
+
+        <div id="characterGrid" class="character-grid"></div>
+
+        <div class="profile-actions">
+            <button id="saveCharacterButton" class="primary-button full-button">
+                Valider mon choix
+            </button>
+
+            <button id="logoutButton" class="logout-button">
+                Se déconnecter
+            </button>
+
+            <button id="closeProfile" class="close-button">
+                Fermer
+            </button>
+        </div>
+
+        <div id="characterStatus" class="status" aria-live="polite"></div>
+
     </div>
 </div>
 
@@ -723,6 +871,195 @@
     let ingredients = [];
     let recipes = [];
     let favorites = [];
+
+    // PERSONNAGES FRIDGECHEF
+const characters = [
+    // 6 femmes
+    { id: "woman-1", gender: "woman", hair: "bun", color: "#543322", skin: "#efbd9d", glasses: false },
+    { id: "woman-2", gender: "woman", hair: "long", color: "#493020", skin: "#e8b18f", glasses: false },
+    { id: "woman-3", gender: "woman", hair: "bob", color: "#493020", skin: "#edbd9e", glasses: false },
+    { id: "woman-4", gender: "woman", hair: "long", color: "#bd6339", skin: "#f0bd9e", glasses: false },
+    { id: "woman-5", gender: "woman", hair: "short", color: "#33251e", skin: "#d99b7c", glasses: false },
+    { id: "woman-6", gender: "woman", hair: "wavy", color: "#a66b42", skin: "#f0c4a5", glasses: false },
+
+    // 6 hommes
+    { id: "man-1", gender: "man", hair: "short", color: "#35251e", skin: "#e5ad8c", glasses: false },
+    { id: "man-2", gender: "man", hair: "curly", color: "#bd8a57", skin: "#edc09e", glasses: false },
+    { id: "man-3", gender: "man", hair: "short", color: "#30231d", skin: "#e4b18e", glasses: true },
+    { id: "man-4", gender: "man", hair: "wavy", color: "#493020", skin: "#c98e70", glasses: false },
+    { id: "man-5", gender: "man", hair: "curly", color: "#38251c", skin: "#f0c3a1", glasses: false },
+    { id: "man-6", gender: "man", hair: "short", color: "#a66b42", skin: "#d9a080", glasses: false }
+];
+
+let selectedCharacter = "woman-1";
+let savedCharacter = "woman-1";
+
+// Crée un portrait illustré en SVG pour chaque personnage.
+function createCharacterImage(character) {
+    const hair = character.color;
+    const skin = character.skin;
+
+    let hairShape = "";
+
+    if (character.hair === "bun") {
+        hairShape = `
+            <circle cx="100" cy="30" r="23" fill="${hair}"/>
+            <path d="M48 91 Q39 35 100 34 Q161 35 152 91 L145 130 L55 130Z" fill="${hair}"/>
+        `;
+    } else if (character.hair === "long") {
+        hairShape = `
+            <path d="M42 91 Q35 24 100 24 Q165 24 158 91 L153 169 L47 169Z" fill="${hair}"/>
+        `;
+    } else if (character.hair === "bob") {
+        hairShape = `
+            <path d="M43 91 Q38 23 100 25 Q162 23 157 91 L151 139 Q130 151 100 137 Q70 151 49 139Z" fill="${hair}"/>
+        `;
+    } else if (character.hair === "curly") {
+        hairShape = `
+            <circle cx="65" cy="47" r="23" fill="${hair}"/>
+            <circle cx="91" cy="32" r="24" fill="${hair}"/>
+            <circle cx="119" cy="35" r="25" fill="${hair}"/>
+            <circle cx="143" cy="56" r="22" fill="${hair}"/>
+            <path d="M45 75 Q100 32 155 75 L150 117 L50 117Z" fill="${hair}"/>
+        `;
+    } else if (character.hair === "wavy") {
+        hairShape = `
+            <path d="M43 91 Q34 25 100 25 Q166 25 157 91
+                     Q171 125 151 159 L138 145 L132 113
+                     Q100 128 68 113 L62 145 L49 159
+                     Q29 125 43 91Z" fill="${hair}"/>
+        `;
+    } else {
+        hairShape = `
+            <path d="M45 92 Q40 25 100 25 Q160 25 155 92
+                     L145 122 Q100 100 55 122Z" fill="${hair}"/>
+        `;
+    }
+
+    const glasses = character.glasses ? `
+        <g fill="none" stroke="#49372c" stroke-width="4">
+            <circle cx="77" cy="91" r="15"/>
+            <circle cx="123" cy="91" r="15"/>
+            <path d="M92 91h16 M62 88l-9-4 M138 88l9-4"/>
+        </g>
+    ` : "";
+
+    const image = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+            <rect width="200" height="200" rx="100" fill="#f0d7c2"/>
+            <path d="M30 200 Q38 144 100 145 Q162 144 170 200Z" fill="#fffaf2"/>
+            <path d="M72 143 L100 174 L128 143" fill="none" stroke="#d8c6b2" stroke-width="3"/>
+            <path d="M86 123h28v28H86z" fill="${skin}"/>
+            ${hairShape}
+            <ellipse cx="100" cy="91" rx="43" ry="53" fill="${skin}"/>
+            <path d="M57 77 Q54 37 100 35 Q146 37 143 77 Q125 56 101 57 Q78 56 57 77Z" fill="${hair}"/>
+            <path d="M78 88q7-6 14 0 M108 88q7-6 14 0" fill="none" stroke="#49372c" stroke-width="3" stroke-linecap="round"/>
+            <path d="M98 99l-3 9 7 1" fill="none" stroke="#b87964" stroke-width="2" stroke-linecap="round"/>
+            <path d="M87 116q13 11 26 0" fill="none" stroke="#a75f56" stroke-width="3" stroke-linecap="round"/>
+            ${glasses}
+            <path d="M74 153l26 24 26-24" fill="none" stroke="#d8c6b2" stroke-width="2"/>
+            <circle cx="100" cy="184" r="3" fill="#b58c68"/>
+        </svg>
+    `;
+
+    return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(image);
+}
+
+// Afficher les personnages dans la grille.
+function renderCharacterGrid() {
+    const grid = $("characterGrid");
+    grid.innerHTML = "";
+
+    characters.forEach(character => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "character-option";
+        button.classList.toggle("selected", character.id === selectedCharacter);
+        button.setAttribute("aria-label", "Choisir ce personnage");
+
+        const image = document.createElement("img");
+        image.src = createCharacterImage(character);
+        image.alt = "Personnage FridgeChef";
+
+        const check = document.createElement("span");
+        check.className = "character-check";
+        check.textContent = "✓";
+
+        button.append(image, check);
+
+        button.addEventListener("click", () => {
+            selectedCharacter = character.id;
+            renderCharacterGrid();
+            updateCurrentCharacter();
+        });
+
+        grid.appendChild(button);
+    });
+}
+
+// Mettre à jour le portrait sélectionné.
+function updateCurrentCharacter() {
+    const character = characters.find(item => item.id === selectedCharacter);
+    if (!character) return;
+
+    $("currentCharacterImage").src = createCharacterImage(character);
+
+    $("profileButton").innerHTML = `
+        <img class="profile-avatar-image"
+             src="${createCharacterImage(character)}"
+             alt="Mon personnage">
+    `;
+}
+
+// Charger le personnage enregistré dans Supabase.
+async function loadCharacter() {
+    const saved = session?.user?.user_metadata?.fridgechef_avatar;
+
+    if (characters.some(character => character.id === saved)) {
+        selectedCharacter = saved;
+        savedCharacter = saved;
+    }
+
+    renderCharacterGrid();
+    updateCurrentCharacter();
+}
+
+// Enregistrer le personnage dans le compte Supabase.
+async function saveCharacter() {
+    const button = $("saveCharacterButton");
+    const status = $("characterStatus");
+
+    button.disabled = true;
+    button.textContent = "Enregistrement...";
+    status.textContent = "";
+
+    try {
+        const { data, error } = await supabase.auth.updateUser({
+            data: {
+                fridgechef_avatar: selectedCharacter
+            }
+        });
+
+        if (error) throw error;
+
+        session = data.user
+            ? { ...session, user: data.user }
+            : session;
+
+        savedCharacter = selectedCharacter;
+        updateCurrentCharacter();
+
+        status.textContent = "Ton personnage a bien été enregistré !";
+    } catch (error) {
+        selectedCharacter = savedCharacter;
+        renderCharacterGrid();
+        updateCurrentCharacter();
+        status.textContent = "Erreur : " + error.message;
+    } finally {
+        button.disabled = false;
+        button.textContent = "Valider mon choix";
+    }
+}
 
     // AUTHENTIFICATION
     async function initializeApp() {
@@ -748,9 +1085,10 @@
 
         $("userFirstName").textContent = firstName || "!";
 
-        $("profileEmail").textContent = session.user.email || "Compte connecté";
+       $("profileEmail").textContent = session.user.email || "Compte connecté";
 
-        await loadFavorites();
+await loadCharacter();
+await loadFavorites();
         return true;
     }
 
